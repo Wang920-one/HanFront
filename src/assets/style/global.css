@@ -1,0 +1,13 @@
+.inputa {
+  /*输入框椭圆*/border-radius: 30px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  -webkit-border-radius:;
+  -moz-border-radius:;
+  -ms-border-radius:;
+  -o-border-radius:;
+}
+
+.el-form-item__label {
+    
+  color: rgb(255, 255, 255);
+}

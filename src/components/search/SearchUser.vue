@@ -1,0 +1,186 @@
+<template>
+  <div>
+    <div class="search-article">
+      <div class="content">
+        <h1 class="title">
+          <slot name="title"></slot>
+          <hr />
+        </h1>
+        <ul>
+          <li>
+            <div class="article-item">
+              <span class="item-index"></span>
+              <span class="item-title">头像</span>
+              <span class="item-name">昵称</span>
+              <span class="item-intro">性别</span>
+            </div>
+          </li>
+          <li v-for="(item, index) in listOfUser" :key="index">
+            <div class="article-item" @click="goAlbum(item)">
+              <span class="item-index">
+                {{ index + 1 }}
+              </span>
+              <span class="item-title">
+                <img
+                  :src="attachImageUrl(item.userImage)"
+                  style="width: 40px;height: 40px;border-radius: 50%;margin-top:2%"
+                />
+              </span>
+              <span class="item-name">{{ item.userName }}</span>
+              <span class="item-intro">{{ changeSex(item.userSex) }}</span>
+            </div>
+            <!-- <el-button
+              round
+              style="background-color:#f7a7a7;color:#ffffff;margin-left:10%"
+              :style="{
+                backgroundColor: bg_color,
+                color: ft_color
+              }"
+              @click="changeGZ()"
+            >
+              {{ gz }}</el-button
+            > -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ContentList from "../ContentList";
+import { mapGetters } from "vuex";
+import { mixin } from "../../mixins";
+
+export default {
+  name: "search-user",
+  mixins: [mixin],
+  data() {
+    return {
+      bg_color: "#f7a7a7",
+      ft_color: "#ffffff",
+      gz: "+关注"
+    };
+  },
+  components: {},
+  computed: {
+    ...mapGetters(["listOfUser"])
+  },
+  mounted() {
+    this.getUser();
+  },
+  methods: {
+    goAlbum(item) {
+      this.$store.commit("setTempList", item);
+      this.$router.push({ path: `author-detail/${item.id}` });
+    },
+    //判断是否已经关注
+    isSubscribeFun(id) {
+      this.$store.commit("setIsGuanzhu", false);
+      this.gz = "+关注";
+      this.bg_color = "#f7a7a7";
+      this.ft_color = "#ffffff";
+      if (this.loginIn) {
+        getListOfSubscribe(this.id).then(res => {
+          for (let item of res) {
+            if (item.beSubscribe == this.user.id) {
+              this.$store.commit("setIsGuanzhu", true);
+              this.gz = "已关注";
+              this.bg_color = "#f56c6c";
+              this.ft_color = "#fef0f0";
+              this.guanzId = item.id;
+              break;
+            }
+          }
+        });
+      }
+    },
+    //关注
+    changeGZ() {
+      if (this.loginIn) {
+        var params = new URLSearchParams();
+        params.append("subscribe", this.id);
+        params.append("beSubscribe", this.user.id);
+        setSubscribe(params).then(res => {
+          if (res.code == 1) {
+            this.$store.commit("setIsGuanzhu", true);
+            this.gz = "已关注";
+            this.bg_color = "#f56c6c";
+            this.ft_color = "#fef0f0";
+            this.$message({
+              showClose: true,
+              message: "关注成功",
+              type: "success"
+            });
+          } else if (res.code == 2) {
+            this.$store.commit("setIsGuanzhu", false);
+            this.gz = "+关注";
+            this.bg_color = "#f7a7a7";
+            this.ft_color = "#ffffff";
+            delSubscribe(this.guanzId).then(res => {
+              this.$message({
+                showClose: true,
+                message: "取消关注成功",
+                type: "success"
+              });
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "关注失败",
+              type: "error"
+            });
+          }
+        });
+      } else {
+        this.$message({
+          showClose: true,
+          message: "请先登录",
+          type: "error"
+        });
+      }
+    }
+  }
+};
+</script>
+<style scoped>
+.search-article {
+  min-height: 300px;
+}
+.content {
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 10px;
+  padding: 20px 40px;
+  min-width: 700px;
+}
+.content ul {
+  /* width: 100%; */
+  padding-bottom: 50px;
+}
+.content ul li {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  text-indent: 20px;
+  cursor: pointer;
+}
+
+.article-item {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.item-index {
+  width: 5%;
+}
+.item-title {
+  width: 30%;
+}
+.item-name {
+  width: 25%;
+}
+.item-intro {
+  width: 40%;
+}
+</style>
