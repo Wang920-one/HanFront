@@ -268,6 +268,9 @@ export default {
     ]),
   },
   created() {
+    if (!this.loginIn) {
+      this.$router.push({ path: `/login` });
+    }
     this.articleid = this.$route.params.id;
     this.getUsers();
     this.getAllarticle();
@@ -277,7 +280,7 @@ export default {
     this.isThumbsFun(this.articleid); //判断当前用户是否已经点赞当前稿件
     this.isSubscribeFun(this.user.id); //判断当前用户是否已经关注当前稿件作者
     this.updateBrowses(); //增加浏览量
-    this.config.value='http://localhost:8080/columnDetails/'+this.articleid;
+    this.config.value = "http://localhost:8080/columnDetails/" + this.articleid;
   },
   components: {
     Head,

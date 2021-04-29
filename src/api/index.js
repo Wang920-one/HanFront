@@ -170,3 +170,13 @@ export const getListOfSubscribe = (subscribe) => get(`subscribe/listOfSubscribe?
 export const delSubscribe = (id) => get(`subscribe/delete?id=${id}`);
 //指定用户的粉丝列表
 export const getListOfBeSubscribe = (beSubscribe) => get(`subscribe/listOfBeSubscribe?beSubscribe=${beSubscribe}`);
+
+// ------------------------------私信相关---------------------------------
+//添加信息
+export const setMessage = (params) => post(`message/add`, params);
+//查询用户的信息列表
+export const getMessageOfUser = (id) => get(`message/allRecord?userId=${id}`);
+//删除和某个用户的聊天记录
+export const delFriendRecord = (userId,friendId) => get(`message/delFriendRecord?userId=${userId}&friendId=${friendId}`);
+//查询某个用户和另一个用户的聊天记录
+export const getFriendRecord = (userId,friendId) => get(`message/friendRecord?userId=${userId}&friendId=${friendId}`);
