@@ -4,8 +4,6 @@ import configure from './configure'
 import user from './user'
 import article from './article'
 import { mapGetters } from "vuex";
-import SockJS from 'sockjs-client';
-// import Stomp from 'stompjs'
 
 Vue.use(Vuex)
 
@@ -16,9 +14,7 @@ const store = new Vuex.Store({
         HOST: 'http://127.0.0.1:8888',
         sessions: [],
         users: [],
-        currentSessionId: 1,
         filterKey: '',
-        stomp:null
     },
     computed: {
         ...mapGetters(["id"])
@@ -26,17 +22,7 @@ const store = new Vuex.Store({
     getters: {
 
     },
-    mutations: {
-        changeCurrentSessionId(state, id) {
-            state.currentSessionId = id;
-        },
-        addMessage(state, msg) {
-            state.sessions[state.currentSessionId - 1].messages.push({
-                content: msg,
-                date: new Date(),
-                self: true
-            })
-        },
+    mutations: {        
         INIT_DATA(state) {
             //浏览器本地的历史聊天记录
             // let data = localStorage.getItem('vue-chat-session');

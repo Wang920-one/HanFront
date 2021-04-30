@@ -1,6 +1,8 @@
 const user = {
     state: {
         id: '',      //用户useId
+        currentSessionId: '',//聊天框好友id
+        sessions: [], //聊天记录
         userName: '',        //用户昵称
         userAccount: '',     //用户账号
         userImage: '',       //用户头像
@@ -19,6 +21,20 @@ const user = {
                 userName = JSON.parse(window.sessionStorage.getItem('userName'))
             }
             return userName;
+        },
+        currentSessionId: state => {
+            let currentSessionId = state.currentSessionId
+            if (!currentSessionId) {
+                currentSessionId = JSON.parse(window.sessionStorage.getItem('currentSessionId'))
+            }
+            return currentSessionId;
+        },
+        sessions: state => {
+            let sessions = state.sessions
+            if (!sessions) {
+                sessions = JSON.parse(window.sessionStorage.getItem('sessions') || null)
+            }
+            return sessions;
         },
         userAccount: state => {
             let userAccount = state.userAccount
@@ -43,6 +59,14 @@ const user = {
         setUserName: (state, userName) => {
             state.userName = userName;
             window.sessionStorage.setItem('userName', JSON.stringify(userName));
+        },
+        setCurrentSessionId: (state, currentSessionId) => {
+            state.currentSessionId = currentSessionId;
+            window.sessionStorage.setItem('currentSessionId', JSON.stringify(currentSessionId));
+        },
+        setSessions: (state, sessions) => {
+            state.sessions = sessions;
+            window.sessionStorage.setItem('sessions', JSON.stringify(sessions));
         },
         setuserAccount: (state, userAccount) => {
             state.userAccount = userAccount;

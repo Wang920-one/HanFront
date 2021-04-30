@@ -131,7 +131,7 @@
             <list></list>
           </div>
           <div class="chatbor">
-            <!-- <message></message> -->
+            <message></message>
             <usertext></usertext>
           </div>
         </div>
@@ -185,9 +185,9 @@ export default {
   computed: {
     ...mapGetters(["id", "loginIn", "userImage", "userName"]),
   },
-  mounted: function () {
-    this.$store.dispatch("initData");
-  },
+  // mounted: function () {
+  //   this.$store.dispatch("initData");
+  // },
   methods: {
     //查询粉丝列表
     getFansList() {
@@ -370,7 +370,7 @@ body > .el-container {
 #chat {
   //   margin: 20px auto;
   width: 100%;
-  height: 700px;
+  height: 830px;
   //   padding-top: 20px;
   overflow: hidden;
   border-radius: 10px;

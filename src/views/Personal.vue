@@ -557,20 +557,27 @@
                               :body-style="{ padding: '0px' }"
                               style="background-color:#ffffff10;height:80px"
                             >
-                              <img
-                                class="image"
-                                style="float:left;height:80px"
-                                :src="attachImageUrl(item.userImage)"
-                              />
-                              <div style="padding-left: 10px;float:left">
-                                <span>昵称：{{ item.userName }}</span><br />
-                                <span>关注时间：{{ item.time }}</span>
-                                <div
-                                  class="bottom clearfix"
-                                  style="float:right"
-                                ></div>
+                              <div @click="goAuthor(item)">
+                                <img
+                                  class="image"
+                                  style="float:left;height:80px"
+                                  :src="attachImageUrl(item.userImage)"
+                                />
+                                <div style="padding-left: 10px;float:left">
+                                  <span>昵称：{{ item.userName }}</span><br />
+                                  <span>关注时间：{{ item.time }}</span>
+                                  <div
+                                    class="bottom clearfix"
+                                    style="float:right"
+                                  ></div>
+                                </div>
                               </div>
                               <div style="padding: 10px;float:right;margin-top:10px">
+                                <el-button
+                                  size="mini"
+                                  type="primary"
+                                  @click="handleSend(item.beSubscribe)"
+                                >打个招呼</el-button>
                                 <el-button
                                   size="mini"
                                   type="danger"
@@ -602,6 +609,33 @@
                         >确定</el-button>
                       </span>
                     </el-dialog>
+                    <el-dialog
+                      title="发送消息"
+                      :visible.sync="sendVisible"
+                      width="500px"
+                      center
+                    >
+                      <div align="center">
+                        <el-input
+                          type="textarea"
+                          :rows="2"
+                          placeholder="请输入内容"
+                          v-model="textarea"
+                        >
+                        </el-input>
+                      </div>
+                      <span slot="footer">
+                        <el-button
+                          size="mini"
+                          @click="sendVisible = false"
+                        >取消</el-button>
+                        <el-button
+                          size="mini"
+                          type="danger"
+                          @click="sendMessage()"
+                        >发送</el-button>
+                      </span>
+                    </el-dialog>
 
                     <el-tab-pane
                       label="粉丝列表"
@@ -627,18 +661,27 @@
                               :body-style="{ padding: '0px' }"
                               style="background-color:#ffffff10;height:80px"
                             >
-                              <img
-                                class="image"
-                                style="float:left;width:80px;height:80px"
-                                :src="attachImageUrl(item.userImage)"
-                              />
-                              <div style="padding-left: 10px;float:left;weight:100%">
-                                <span>昵称：{{ item.userName }}</span><br />
-                                <span>被关注时间：{{ attachDate(item.time) }}</span>
-                                <div
-                                  class="bottom clearfix"
-                                  style="float:right"
-                                ></div>
+                              <div @click="goAuthor1(item)">
+                                <img
+                                  class="image"
+                                  style="float:left;width:80px;height:80px"
+                                  :src="attachImageUrl(item.userImage)"
+                                />
+                                <div style="padding-left: 10px;float:left;weight:100%">
+                                  <span>昵称：{{ item.userName }}</span><br />
+                                  <span>被关注时间：{{ attachDate(item.time) }}</span>
+                                  <div
+                                    class="bottom clearfix"
+                                    style="float:right"
+                                  ></div>
+                                </div>
+                              </div>
+                              <div style="padding: 10px;float:right;margin-top:10px">
+                                <el-button
+                                  size="mini"
+                                  type="primary"
+                                  @click="handleSend(item.subscribe)"
+                                >打个招呼</el-button>
                               </div>
                             </el-card>
                             <hr />
@@ -648,38 +691,6 @@
                     </el-tab-pane>
                   </el-tabs>
                 </el-tab-pane>
-
-                <!-- <el-tab-pane label="我的消息" name="message">
-                  <div>
-                    <h3
-                      style="font-size: 19px;font-family: '楷体';color:#f7a7a7;"
-                    >
-                      <i class="el-icon-s-unfold"></i>消息列表
-                    </h3>
-                    <el-col>
-                      <el-row
-                        :span="4"
-                        v-for="(o, index) in 4"
-                        :key="o"
-                        :offset="index > 0 ? 4 : 0"
-                      >
-                        <el-card
-                          :body-style="{ padding: '0px' }"
-                          style="background-color:#ffffff10;height:60px"
-                        >
-                          <div style="padding: 20px;float:left;weight:100%">
-                            <span>用户昵称</span>
-                            <div
-                              class="bottom clearfix"
-                              style="float:right"
-                            ></div>
-                          </div>
-                        </el-card>
-                        <hr />
-                      </el-row>
-                    </el-col>
-                  </div>
-                </el-tab-pane> -->
 
                 <el-tab-pane
                   label="投诉建议"
@@ -750,6 +761,7 @@ import {
   delArticle,
   delShouc,
   delSubscribe,
+  setMessage,
 } from "../api/index";
 export default {
   name: "Personal",
@@ -769,14 +781,17 @@ export default {
       collectDate: [], //用户的收藏列表
       pageSize1: 5, //分页的每页大小
       currentPage1: 1, //当前页
+      textarea: "", //发送的信息内容
       delVisible1: false,
       delVisible2: false,
       delVisible3: false,
       delVisible4: false,
+      sendVisible: false,
       idx1: -1,
       idx2: -1,
       idx3: -1,
       idx4: -1,
+      idx5: -1,
       //用户信息
       perForm: {
         id: "",
@@ -1247,6 +1262,53 @@ export default {
           this.$router.push({ path: `/columnDetails/${res.id}` });
         });
       }
+    },
+    goAuthor(item) {
+      this.$store.commit("setTempList", item);
+      this.$router.push({ path: `/author-detail/${item.beSubscribe}` });
+    },
+    goAuthor1(item) {
+      this.$store.commit("setTempList", item);
+      this.$router.push({ path: `/author-detail/${item.subscribe}` });
+    },
+    //弹出发送消息窗口
+    handleSend(id) {
+      if (this.loginIn) {
+        this.sendVisible = true;
+        this.idx5 = id;
+      } else {
+        this.$message({
+          showClose: true,
+          message: "请先登录",
+          type: "error",
+        });
+      }
+    },
+    //打招呼，发送信息
+    sendMessage() {
+      let params = new URLSearchParams();
+      params.append("userId", this.userId);
+      params.append("friendId", this.idx5);
+      params.append("senderId", this.userId);
+      params.append("receiverId", this.idx5);
+      params.append("content", this.textarea);
+      setMessage(params).then((res) => {
+        if (res.code == 1) {
+          this.$message({
+            showClose: true,
+            message: "信息发送成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            showClose: true,
+            message: "信息发送失败",
+            type: "error",
+          });
+        }
+      });
+      this.textarea = "";
+      this.sendVisible = false;
     },
     goBack() {
       this.$router.go(-1);

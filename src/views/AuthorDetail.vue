@@ -36,6 +36,11 @@
                 >
                   <el-button
                     round
+                    style="background-color:#fad0d0;color:#ffffff"
+                    @click="handleSend(user.id)"
+                  >私信</el-button>
+                  <el-button
+                    round
                     style="background-color:#f7a7a7;color:#ffffff"
                     :style="{
                       backgroundColor: bg_color,
@@ -46,7 +51,33 @@
                     {{ gz }}</el-button>
                 </div>
               </div>
-
+              <el-dialog
+                title="发送消息"
+                :visible.sync="sendVisible"
+                width="500px"
+                center
+              >
+                <div align="center">
+                  <el-input
+                    type="textarea"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="textarea"
+                  >
+                  </el-input>
+                </div>
+                <span slot="footer">
+                  <el-button
+                    size="mini"
+                    @click="sendVisible = false"
+                  >取消</el-button>
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="sendMessage()"
+                  >发送</el-button>
+                </span>
+              </el-dialog>
               <div class="content">
                 <el-tabs
                   type="border-card"
@@ -148,6 +179,7 @@ import {
   getListOfSubscribe,
   setSubscribe,
   delSubscribe,
+  setMessage
 } from "../api/index";
 export default {
   name: "author-detail",
@@ -157,6 +189,9 @@ export default {
       activeName: "article",
       bg_color: "#f7a7a7",
       ft_color: "#ffffff",
+      sendVisible: false, //发送信息窗口
+      textarea: "", //发送的信息内容
+      idx: -1,
       gz: "+关注",
       articlelist: [],
       videolist: [],
@@ -187,6 +222,45 @@ export default {
     this.isSubscribeFun(this.userId); //判断当前用户是否已经关注当前稿件作者
   },
   methods: {
+    //弹出发送消息窗口
+    handleSend(id) {
+      if (this.loginIn) {
+        this.sendVisible = true;
+        this.idx = id;
+      } else {
+        this.$message({
+          showClose: true,
+          message: "请先登录",
+          type: "error",
+        });
+      }
+    },
+    //打招呼，发送信息
+    sendMessage() {
+      let params = new URLSearchParams();
+      params.append("userId", this.id);
+      params.append("friendId", this.idx);
+      params.append("senderId", this.id);
+      params.append("receiverId", this.idx);
+      params.append("content", this.textarea);
+      setMessage(params).then((res) => {
+        if (res.code == 1) {
+          this.$message({
+            showClose: true,
+            message: "信息发送成功",
+            type: "success",
+          });
+        } else {
+          this.$message({
+            showClose: true,
+            message: "信息发送失败",
+            type: "error",
+          });
+        }
+      });
+      this.textarea = "";
+      this.sendVisible = false;
+    },
     //判断是否已经关注
     isSubscribeFun(id) {
       this.$store.commit("setIsGuanzhu", false);

@@ -1,13 +1,25 @@
 <template>
-  <div id="message" v-scroll-bottom="session">
-    <ul v-if="currentSessionId == item.id" v-for="item in sessions">
-      <li v-for="entry in item.messages">
-        <p class="time">
+  <div id="message">
+    <!-- v-scroll-bottom="this.sessions" -->
+    <ul
+      v-for="(item,index) in this.sessions"
+      :key="index"
+      v-show="currentSessionId == item.friendId"
+    >
+      <li>
+        <!-- <p class="time">
           <span>{{ entry.date | time }}</span>
-        </p>
-        <div class="main" :class="{ self: entry.self }">
-          <img class="avatar" :src="entry.self ? img : item.user.img" alt="" />
-          <p class="text">{{ entry.content }}</p>
+        </p> -->
+        <div
+          class="main"
+          :class="{ self: item.senderId == id }"
+        >
+          <img
+            class="avatar"
+            :src="(item.userId != item.senderId) ? attachImageUrl(item.userImage) : attachImageUrl(userImage)"
+            alt=""
+          />
+          <p class="text">{{ item.content }}</p>
         </div>
       </li>
     </ul>
@@ -15,34 +27,55 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
+import { mixin } from "../../mixins";
+import {
+  getMessageOfUser,
+  getUserOfId,
+  getFriendRecord,
+} from "../../api/index";
 
 export default {
   name: "message",
+  mixins: [mixin],
   data() {
     return {
-      img: "../src/assets/images/1.jpg"
+      user: [],
+      img: "../src/assets/images/1.jpg",
     };
   },
-  computed: mapState(["sessions", "currentSessionId"]),
-  filters: {
-    time(date) {
-      if (date) {
-        date = new Date(date);
-      }
-      return `${date.getHours()}:${date.getMinutes()}`;
-    }
+  // computed: mapState(["sessions", "currentSessionId"]),
+  computed: {
+    ...mapGetters([
+      "loginIn", //用户是否登录
+      "currentSessionId", //当前对话框的好友id
+      "id", //当前登录用户id
+      "sessions", //聊天记录
+      "userImage", //用户头像
+    ]),
   },
-  directives: {
-    /*这个是vue的自定义指令,官方文档有详细说明*/
-    // 发送消息后滚动到底部,这里无法使用原作者的方法，也未找到合理的方法解决，暂用setTimeout的方法模拟
-    "scroll-bottom"(el) {
-      //console.log(el.scrollTop);
-      setTimeout(function() {
-        el.scrollTop += 9999;
-      }, 1);
-    }
-  }
+  created() {},
+  mounted() {
+    this.getImage();
+  },
+  methods: {
+    //获取好友的头像信息
+    getImage() {
+      getUserOfId(this.currentSessionId).then((res) => {
+        this.user = res;
+      });
+    },
+  },
+  // directives: {
+  //   /*这个是vue的自定义指令,官方文档有详细说明*/
+  //   // 发送消息后滚动到底部,这里无法使用原作者的方法，也未找到合理的方法解决，暂用setTimeout的方法模拟
+  //   "scroll-bottom"(el) {
+  //     //console.log(el.scrollTop);
+  //     setTimeout(function () {
+  //       el.scrollTop += 9999;
+  //     }, 1);
+  //   },
+  // },
 };
 </script>
 

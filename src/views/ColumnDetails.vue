@@ -268,9 +268,9 @@ export default {
     ]),
   },
   created() {
-    if (!this.loginIn) {
-      this.$router.push({ path: `/login` });
-    }
+    // if (!this.loginIn) {
+    //   this.$router.push({ path: `/login` });
+    // }
     this.articleid = this.$route.params.id;
     this.getUsers();
     this.getAllarticle();

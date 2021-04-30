@@ -1,7 +1,37 @@
-import { getArticleOfBt, getVideoOfBt, getUserOfName, getUserOfId, getActiveOfName, getShopOfName } from '../api/index';
+import { getArticleOfBt, getVideoOfBt, getUserOfName, getUserOfId, getActiveOfName, getShopOfName, getFriendRecord } from '../api/index';
 export const mixin = {
     methods: {
         //--------------------------用户方法-------------------------
+        //查询和某个用户的聊天记录
+        getFriendList() {
+            getFriendRecord(this.id, this.currentSessionId)
+                .then((res) => {
+                    for (let item of res) {
+                        this.getUsers1(item.friendId, item);
+                    }
+                    this.$store.commit("setSessions", this.sessions);
+                })
+                .catch((err) => {
+                    this.$message({
+                        showClose: true,
+                        message: "聊天记录加载失败",
+                        type: "error",
+                    });
+                });
+        },
+        //通过id查询用户信息
+        getUsers1(useId, item) {
+            getUserOfId(useId)
+                .then((res) => {
+                    let o = item;
+                    o.userName = res.userName;
+                    o.userImage = res.userImage;
+                    this.sessions.push(o);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
         //弹出删除视频窗口
         uhandleDelete1(id) {
             this.idx1 = id;
