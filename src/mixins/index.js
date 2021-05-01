@@ -62,6 +62,7 @@ export const mixin = {
                 .then(res => {
                     let o = item;
                     o.userName = res.userName;
+                    o.userImage = res.userImage;
                 })
                 .catch(err => {
                     console.log(err);

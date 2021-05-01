@@ -268,7 +268,7 @@
                         <el-col>
                           <el-row
                             :span="8"
-                            v-for="(item, index) in data1"
+                            v-for="(item, index) in videoDate"
                             :key="index"
                           >
                             <div>

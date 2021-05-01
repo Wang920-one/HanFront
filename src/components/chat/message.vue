@@ -1,15 +1,17 @@
 <template>
-  <div id="message">
-    <!-- v-scroll-bottom="this.sessions" -->
+  <div
+    id="message"
+    v-scroll-bottom="this.sessions"
+  >
     <ul
       v-for="(item,index) in this.sessions"
       :key="index"
       v-show="currentSessionId == item.friendId"
     >
       <li>
-        <!-- <p class="time">
-          <span>{{ entry.date | time }}</span>
-        </p> -->
+        <p class="time">
+          <span>{{ item.sendTime }}</span>
+        </p>
         <div
           class="main"
           :class="{ self: item.senderId == id }"
@@ -30,9 +32,7 @@
 import { mapGetters } from "vuex";
 import { mixin } from "../../mixins";
 import {
-  getMessageOfUser,
   getUserOfId,
-  getFriendRecord,
 } from "../../api/index";
 
 export default {
@@ -63,26 +63,32 @@ export default {
     getImage() {
       getUserOfId(this.currentSessionId).then((res) => {
         this.user = res;
-      });
+      }).catch((err) => {
+          this.$message({
+            showClose: true,
+            message: "头像信息获取失败",
+            type: "error",
+          });
+        });
     },
   },
-  // directives: {
-  //   /*这个是vue的自定义指令,官方文档有详细说明*/
-  //   // 发送消息后滚动到底部,这里无法使用原作者的方法，也未找到合理的方法解决，暂用setTimeout的方法模拟
-  //   "scroll-bottom"(el) {
-  //     //console.log(el.scrollTop);
-  //     setTimeout(function () {
-  //       el.scrollTop += 9999;
-  //     }, 1);
-  //   },
-  // },
+  directives: {
+    /*这个是vue的自定义指令,官方文档有详细说明*/
+    // 发送消息后滚动到底部,这里无法使用原作者的方法，也未找到合理的方法解决，暂用setTimeout的方法模拟
+    "scroll-bottom"(el) {
+      //console.log(el.scrollTop);
+      setTimeout(function () {
+        el.scrollTop += 9999;
+      }, 1);
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 #message {
   padding: 15px;
-  max-height: 68%;
+  max-height: 60%;
   overflow-y: scroll;
   ul {
     list-style-type: none;
@@ -98,8 +104,8 @@ export default {
       display: inline-block;
       padding: 0 18px;
       font-size: 12px;
-      color: #fff;
-      background-color: #dcdcdc;
+      color: rgb(0, 0, 0);
+      background-color: #ffffff75;
       border-radius: 2px;
     }
   }

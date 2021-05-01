@@ -177,6 +177,12 @@ export const setMessage = (params) => post(`message/add`, params);
 //查询用户的信息列表
 export const getMessageOfUser = (id) => get(`message/allRecord?userId=${id}`);
 //删除和某个用户的聊天记录
-export const delFriendRecord = (userId,friendId) => get(`message/delFriendRecord?userId=${userId}&friendId=${friendId}`);
+export const delFriendRecord = (userId, friendId) => get(`message/delFriendRecord?userId=${userId}&friendId=${friendId}`);
 //查询某个用户和另一个用户的聊天记录
-export const getFriendRecord = (userId,friendId) => get(`message/friendRecord?userId=${userId}&friendId=${friendId}`);
+export const getFriendRecord = (userId, friendId) => get(`message/friendRecord?userId=${userId}&friendId=${friendId}`);
+//更新消息状态
+export const updateStatus = (params) => post(`message/updateStatus`, params);
+//查询与某个用户的的未读信息列表
+export const getFriendUnRead = (senderId, receiverId, friendId) => get(`message/allFriendUnRead?senderId=${senderId}&receiverId=${receiverId}&friendId=${friendId}`);
+//查询所有未读信息列表
+export const getAllUnRead = (id) => get(`message/allUnRead?userId=${id}`);

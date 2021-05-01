@@ -38,7 +38,12 @@
             @command="hadleCommand"
           >
             <span class="el-dropdown-link">
-              {{userName}}
+              <el-badge
+                :hidden="this.allunread.length==0"
+                is-dot
+                class="item"
+              >{{userName}}
+              </el-badge>
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -49,7 +54,14 @@
               <el-dropdown-item
                 command="myMessage"
                 icon="el-icon-message"
-              > 我的消息</el-dropdown-item>
+              >
+                我的消息
+                <el-badge
+                  :hidden="this.allunread.length==0"
+                  class="mark"
+                  :value="this.allunread.length"
+                />
+              </el-dropdown-item>
               <el-dropdown-item
                 command="logout"
                 icon="el-icon-warning-outline"
@@ -94,7 +106,7 @@
           <span style="color:#fff;font-family:'楷体';font-size:18px;float:left;margin-left:15px;margin-top:15px">华夏衣裳汉服交流网</span>
           <div
             class="header-search"
-            style="margin-left:28%;float:left;width:30%"
+            style="margin-left:25%;float:left;width:25%"
           >
             <input
               type="text"
@@ -116,26 +128,53 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-import FriendChat from '../views/chat/FriendChat';
+import { getAllUnRead } from "../api/index";
 export default {
   name: "Head",
   data() {
     return {
       keywords: "",
-      restaurants: [],
+      allunread: [],
       state: "",
     };
   },
+  created() {
+    if (this.loginIn) {
+      this.getUnReadList(this.id);
+    }
+  },
   computed: {
-    ...mapGetters(['id',"loginIn", "userImage", "userName"]),
+    ...mapGetters([
+      "loginIn", //用户是否登录
+      "currentSessionId", //当前对话框的好友id
+      "sessions", //聊天记录
+      "id", //当前登录用户id
+      "loginIn",
+      "userImage",
+      "userName",
+    ]),
   },
   methods: {
+    //获取所有未读信息的数量
+    getUnReadList(userId) {
+      getAllUnRead(userId)
+        .then((res) => {
+          this.allunread = res;
+        })
+        .catch((err) => {
+          this.$message({
+            showClose: true,
+            message: "未读信息数量获取失败",
+            type: "error",
+          });
+        });
+    },
     goSearch() {
       this.$router.push({
         path: "/search",
         query: { keywords: this.keywords },
       });
-      this.$router.go(0);     //刷新当前页面
+      this.$router.go(0); //刷新当前页面
     },
     //获取图片地址
     attachImageUrl(srcurl) {
@@ -145,14 +184,16 @@ export default {
     },
     hadleCommand(command) {
       if (command == "logout") {
-        localStorage.removeItem("userName");
-        this.$store.commit("setloginIn",false);
-        // this.$router.go(0);     //刷新当前页面
+        this.$store.commit("setloginIn", false);
+        var storage = window.localStorage;
+        storage.clear();
+        this.$router.go(0); //刷新当前页面
         this.$router.replace({ path: `/index` });
-      }if(command=="personal"){
+      }
+      if (command == "personal") {
         this.$router.push({ path: `/personal/${this.id}` });
       }
-      if(command=="myMessage"){
+      if (command == "myMessage") {
         this.$router.push({ path: `/friendchat` });
       }
     },
@@ -175,7 +216,7 @@ export default {
 }
 .header-search input {
   height: 35px;
-  width: 270px;
+  width: 250px;
   font-size: 14px;
   border: 0;
   text-indent: 10px;

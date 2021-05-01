@@ -8,14 +8,15 @@
       />
       <p class="name">{{ this.user.userName }}</p>
     </header>
-    <footer>
+    <hr>
+    <!-- <footer>
       <input
         class="search"
         type="text"
-        v-model="$store.state.filterKey"
+        v-model="keywords"
         placeholder="search user..."
       />
-    </footer>
+    </footer> -->
   </div>
 </template>
 
@@ -64,11 +65,11 @@ export default {
     font-size: 16px;
   }
   .search {
-    background: #26292e;
+    background: #ffffff;
     height: 30px;
     line-height: 30px;
     padding: 0 10px;
-    border: 1px solid #3a3a3a;
+    border: 1px solid #929292;
     border-radius: 4px;
     outline: none; /*鼠标点击后不会出现蓝色边框*/
     color: #fff;

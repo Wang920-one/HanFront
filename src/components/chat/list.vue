@@ -5,15 +5,19 @@
         v-for="(item,index) in users"
         :key="index"
         :class="{ active: item.friendId === currentSessionId }"
-        v-on:click="changeCurrentSessionId(item.friendId)"
+        v-on:click="changeCurrentSessionId(item)"
       >
-        <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
         <img
           class="avatar"
           :src="attachImageUrl(item.userImage)"
           :alt="item.userName"
         />
         <p class="name">{{ item.userName }}</p>
+        <el-badge
+          :hidden="item.unread==0"
+          :value="item.unread"
+          class="item"
+        ></el-badge>
       </li>
     </ul>
   </div>
@@ -25,7 +29,8 @@ import { mixin } from "../../mixins";
 import {
   getMessageOfUser,
   getUserOfId,
-  getFriendRecord,
+  getFriendUnRead,
+  updateStatus,
 } from "../../api/index";
 
 export default {
@@ -33,13 +38,24 @@ export default {
   mixins: [mixin],
   data() {
     return {
+      index: 0,
+      hideBadge: true,
+      friendrecord: [], //好友未读消息数
       users: [],
       friendsessions: [],
+      timer: null, // 定时器
     };
   },
   created() {
     this.getMessageList(this.id);
+    // 每10秒刷新一次
+    this.timer = setInterval(() => {
+      this.users = [];
+      this.getMessageList(this.id);
+      this.index += 1;
+    }, 1000 * 10);
   },
+  mounted() {},
   computed: {
     ...mapGetters([
       "loginIn", //用户是否登录
@@ -48,13 +64,37 @@ export default {
       "id", //当前登录用户id
     ]),
   },
+  destroyed() {
+    clearInterval(this.timer);
+  },
   methods: {
+    //获取该好友未读信息的数量
+    getFUnReadList(senderId, receiverId, friendId, item) {
+      getFriendUnRead(senderId, receiverId, friendId)
+        .then((res) => {
+          this.friendrecord = res;
+          let i = item;
+          item.unread = this.friendrecord.length;
+          getUserOfId(friendId).then((res) => {
+            i.userName = res.userName;
+            i.userImage = res.userImage;
+            this.users.push(i);
+          });
+        })
+        .catch((err) => {
+          this.$message({
+            showClose: true,
+            message: "未读信息数量获取失败",
+            type: "error",
+          });
+        });
+    },
     //获取用户的信息列表
     getMessageList(userId) {
       getMessageOfUser(userId)
         .then((res) => {
           for (let item of res) {
-            this.getUsers(item.friendId, item);
+            this.getFUnReadList(item.friendId, userId, item.friendId, item);
           }
         })
         .catch((err) => {
@@ -65,21 +105,22 @@ export default {
           });
         });
     },
-    //通过id查询用户信息
-    getUsers(useId, item) {
-      getUserOfId(useId)
+    changeCurrentSessionId: function (item) {
+      this.$store.commit("setCurrentSessionId", item.friendId);
+      let params = new URLSearchParams();
+      //   this.form.actReview = !this.form.actReview;
+      params.append("senderId", item.friendId);
+      params.append("receiverId", item.userId);
+      params.append("status", "2");
+      updateStatus(params)
         .then((res) => {
-          let o = item;
-          o.userName = res.userName;
-          o.userImage = res.userImage;
-          this.users.push(o);
+          if (res.code == 1) {
+          } else {
+          }
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-    changeCurrentSessionId: function (id) {
-      this.$store.commit("setCurrentSessionId", id);
       this.$store.commit("setSessions", []);
       this.getFriendList();
     },
@@ -110,6 +151,10 @@ export default {
   .name {
     display: inline-block;
     margin-left: 15px;
+  }
+  .item {
+    float: right;
+    margin-top: 15px;
   }
 }
 </style>

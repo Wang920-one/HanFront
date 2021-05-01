@@ -128,10 +128,12 @@
 
         <div id="chat">
           <div class="cebian">
+            <card></card>
             <list></list>
           </div>
           <div class="chatbor">
             <message></message>
+            <buttons></buttons>
             <usertext></usertext>
           </div>
         </div>
@@ -143,6 +145,7 @@
 </template>
 <script>
 import card from "@/components/chat/card.vue";
+import buttons from "@/components/chat/buttons.vue";
 import list from "@/components/chat/list.vue";
 import message from "@/components/chat/message.vue";
 import usertext from "@/components/chat/usertext.vue";
@@ -155,6 +158,8 @@ import {
   getListOfSubscribe,
   getListOfBeSubscribe,
 } from "../../api/index";
+import Card from '../../components/chat/card.vue';
+import Buttons from '../../components/chat/buttons.vue';
 
 export default {
   name: "friendchat",
@@ -179,8 +184,9 @@ export default {
     ScrollTop,
     card,
     list,
+    buttons,
     message,
-    usertext,
+    usertext
   },
   computed: {
     ...mapGetters(["id", "loginIn", "userImage", "userName"]),
@@ -382,12 +388,19 @@ body > .el-container {
     float: left;
     color: #f4f4f4;
     background-color: #ebb4b4;
-    width: 200px;
+    width: 210px;
   }
   .chatbor {
     position: relative;
     overflow: hidden;
     background-color: rgba(238, 238, 238, 0.596);
+  }
+  .buttons {
+    bottom: 0;
+    right: 0;
+    height: 10%;
+    position: absolute;
+    width: 100%;
   }
 }
 </style>
