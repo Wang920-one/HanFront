@@ -15,7 +15,7 @@
           </el-tooltip>
         </router-link>
       </el-header>
-      <span class="words">欢迎加入华夏衣裳汉服交流网！</span>
+      <span class="words">欢迎来到华夏衣裳汉服后台管理！</span>
       <el-form
         :model="loginForm"
         :rules="rules"
@@ -35,25 +35,25 @@
               class="goback"
               icon="el-icon-back"
             ></el-button>
-            </el-tooltip>
-              <span>用户登录</span>
+          </el-tooltip>
+          <span>管理员登录</span>
         </div>
         <el-form-item
-          label="账号"
-          prop="userAccount"
+          label="管理员"
+          prop="manageName"
         >
           <el-input
-            v-model="loginForm.userAccount"
-            placeholder="账号"
+            v-model="loginForm.manageName"
+            placeholder="管理员"
           ></el-input>
         </el-form-item>
         <el-form-item
           label="密码"
-          prop="userPassword"
+          prop="managePassword"
         >
           <el-input
             type="password"
-            v-model="loginForm.userPassword"
+            v-model="loginForm.managePassword"
             placeholder="密码"
           ></el-input>
         </el-form-item>
@@ -62,109 +62,70 @@
           <el-button
             class="buttona"
             type="primary"
-            @click="handleLogin()"
+            @click="submitForm('loginForm')"
           >登录</el-button>
           <el-button
             class="buttona"
-            type="primary"
-            @click="toRegister"
-          >注册</el-button>
+             type="primary"
+            @click="toUser"
+          >用户</el-button>
         </el-form-item>
-        <div>
-          <el-tooltip
-            content="管理员登录"
-            placement="bottom"
-            effect="light"
-          >
-            <el-button
-              type="text"
-              style="padding-top:0"
-              @click="toManage"
-            >管理员
-            </el-button>
-          </el-tooltip>
-        </div>
       </el-form>
     </el-container>
   </div>
 </template>
 <script>
-import Footer from "@/components/Footer.vue";
-import Head from "@/components/Head.vue";
-import ScrollTop from "@/components/ScrollTop.vue";
-import { mixin } from "../mixins";
-import { LoginIn } from "../api/index";
+import { getLoginStatus } from "../../api/index";
+import { mixin } from "../../mixins/index";
 export default {
-  name: "login",
+  name: "ManageLogin",
   name: "bgImg",
   mixins: [mixin],
   data() {
     return {
       loginForm: {
-        userAccount: "",
-        userPassword: "",
+        manageName: "",
+        managePassword: "",
       },
       rules: {
-        userAccount: [
+        manageName: [
           { required: true, message: "请输入账号", trigger: "blur" },
         ],
-        userPassword: [
+        managePassword: [
           { required: true, message: "请输入密码", trigger: "change" },
         ],
       },
     };
   },
-  components: {
-    Head,
-    Footer,
-    ScrollTop,
-  },
   methods: {
-    handleLogin() {
-      let _this = this;
+    submitForm(formName) {
       let params = new URLSearchParams();
-      params.append("userAccount", this.loginForm.userAccount);
-      params.append("userPassword", this.loginForm.userPassword);
-      LoginIn(params)
-        .then((res) => {
-          if (res.code == 1) {
-            _this.$message({
-              showClose: true,
-              message: "登录成功",
-              type: "success",
-            });
-            _this.$store.commit("setloginIn", true);
-            _this.$store.commit("setId", res.userMsg.id);
-            _this.$store.commit("setUserName", res.userMsg.userName);
-            _this.$store.commit("setuserAccount", res.userMsg.userAccount);
-            _this.$store.commit("setUserImage", res.userMsg.userImage);
-            setTimeout(function () {
-              _this.$router.push({ path: "/" });
-            }, 2000);
-          } else {
-            _this.$message({
-              showClose: true,
-              message: "账号或者密码错误",
-              type: "error",
-            });
-          }
-        })
-        .catch((res) => {
-          _this.$message({
+      params.append("manageName", this.loginForm.manageName);
+      params.append("managePassword", this.loginForm.managePassword);
+      // console.log(this.loginForm.managePassword);
+      getLoginStatus(params).then((res) => {
+        if (res.code == 1) {
+          localStorage.setItem("manageName", this.loginForm.manageName);
+          this.$router.push("/MInfo");
+          this.$message({
             showClose: true,
-            message: "登录失败",
+            message: "登录成功",
+            type: "success",
+          });
+        } else {
+          this.$message.error({
+            showClose: true,
+            message: "账号或者密码错误",
             type: "error",
           });
-        });
+        }
+      });
     },
-    toRegister() {
-      this.$router.push("/register");
+    toUser() {
+      this.$router.push("/login");
     },
     toIndex() {
       this.$router.push("/index");
-    },
-    toManage() {
-      this.$router.push("/managelogin");
     },
   },
 };
@@ -172,7 +133,7 @@ export default {
 
 <style scoped>
 #bgImg {
-  background-image: url("../assets/images/background/登录.jpg");
+  background-image: url("../../assets/images/background/登录.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;

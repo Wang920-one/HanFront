@@ -20,6 +20,12 @@ import 'quill/dist/quill.bubble.css'
 
 import './assets/iconfont/iconfont.css'
 
+import JwChat from 'jwchat';
+
+/* 在 0.2.041 之前的版本需要引入 css */
+// import 'jwchat/lib/JwChat.css';
+Vue.use(JwChat)
+
 Vue.config.productionTip = false
 //修改原型链，全局使用axios。这样之后可在每个组件的methods中调用$axios命令完成数据请求
 Vue.prototype.$axios=axios

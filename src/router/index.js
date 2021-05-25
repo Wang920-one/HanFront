@@ -1,24 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Index from '../views/Index.vue'
+import Index from '../views/main/Index.vue'
 import Register from '../views/Register.vue'
-import Knows from '../views/Knows.vue'
-import Active from '../views/Active.vue'
-import DynamicDetails from '../views/DynamicDetails.vue'
-import ColumnDetails from '../views/ColumnDetails.vue'
-import Manage from '../views/Manage.vue'
+import Knows from '../views/main/Knows.vue'
+import Active from '../views/main/Active.vue'
+import DynamicDetails from '../views/details/DynamicDetails.vue'
+import ColumnDetails from '../views/details/ColumnDetails.vue'
+import Manage from '../views/manage/Manage.vue'
 import Personal from '../views/Personal.vue'
-import Shop from '../views/Shop.vue'
-import Square from '../views/Square.vue'
-import Publish from '../views/Publish.vue'
-import PublishVideo from '../views/PublishVideo.vue'
-import ManageLogin from '../views/ManageLogin.vue'
+import Shop from '../views/main/Shop.vue'
+import Square from '../views/main/Square.vue'
+import Publish from '../views/contributions/Publish.vue'
+import PublishVideo from '../views/contributions/PublishVideo.vue'
+import ManageLogin from '../views/manage/ManageLogin.vue'
 import Search from '../views/Search.vue'
-import AuthorDetail from '../views/AuthorDetail.vue'
-import ActiveDetail from '../views/ActiveDetail.vue'
-import EditVideo from '../views/EditVideo.vue'
-import EditArticle from '../views/EditArticle.vue'
+import AuthorDetail from '../views/details/AuthorDetail.vue'
+import ActiveDetail from '../views/details/ActiveDetail.vue'
+import EditVideo from '../views/contributions/EditVideo.vue'
+import EditArticle from '../views/contributions/EditArticle.vue'
 import FriendChat from '../views/chat/FriendChat.vue'
 // import Helloworld from "../views/HelloWorld.vue"
 
@@ -132,35 +132,35 @@ const routes = [
     },
     {
         path: '/MHome',
-        component: resolve => require(['../components/ManageHome.vue'], resolve),
+        component: resolve => require(['../components/manage/ManageHome.vue'], resolve),
         children: [
             {
                 path: '/MInfo',
-                component: resolve => require(['../views/ManageInfo.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageInfo.vue'], resolve)
             },
             {
                 path: '/MUser',
-                component: resolve => require(['../views/ManageUser.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageUser.vue'], resolve)
             },
             {
                 path: '/MArticle',
-                component: resolve => require(['../views/ManageArticle.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageArticle.vue'], resolve)
             },
             {
                 path: '/MContribute',
-                component: resolve => require(['../views/ManageContribute.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageContribute.vue'], resolve)
             },
             {
                 path: '/MShop',
-                component: resolve => require(['../views/ManageShop.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageShop.vue'], resolve)
             },
             {
                 path: '/MActive',
-                component: resolve => require(['../views/ManageActive.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageActive.vue'], resolve)
             },
             {
                 path: '/MSuggest',
-                component: resolve => require(['../views/ManageSuggest.vue'], resolve)
+                component: resolve => require(['../views/manage/ManageSuggest.vue'], resolve)
             },
         ]
     },

@@ -23,9 +23,9 @@
             >
               <el-button
                 type="primary"
-                icon="el-icon-user-solid"
+                icon="el-icon-user"
                 class="shouye"
-                style="background-color:#ffffff10;border: lightpink;float: right;margin-top: 10px;"
+                style=" margin-right: 0;"
               ></el-button>
             </el-tooltip>
           </router-link>
@@ -82,7 +82,6 @@
                 type="primary"
                 icon="el-icon-camera"
                 class="shouye"
-                style="background-color:#ffffff10;border: lightpink;float: right;margin-top: 10px;margin-right: 20px;"
               ></el-button>
             </el-tooltip>
           </router-link>
@@ -96,7 +95,6 @@
                 type="primary"
                 icon="el-icon-edit"
                 class="shouye"
-                style="background-color:#ffffff10;border: lightpink;float: right;margin-top: 10px;margin-right: 20px;"
               ></el-button>
             </el-tooltip>
           </router-link>
@@ -140,7 +138,7 @@ export default {
   },
   created() {
     if (this.loginIn) {
-      this.getUnReadList(this.id);
+      this.getUnReadList(this.id,this.id);
     }
   },
   computed: {
@@ -156,8 +154,8 @@ export default {
   },
   methods: {
     //获取所有未读信息的数量
-    getUnReadList(userId) {
-      getAllUnRead(userId)
+    getUnReadList(userId,receiverId) {
+      getAllUnRead(userId,receiverId)
         .then((res) => {
           this.allunread = res;
         })
@@ -187,8 +185,8 @@ export default {
         this.$store.commit("setloginIn", false);
         var storage = window.localStorage;
         storage.clear();
-        this.$router.go(0); //刷新当前页面
         this.$router.replace({ path: `/index` });
+        this.$router.go(0); //刷新当前页面
       }
       if (command == "personal") {
         this.$router.push({ path: `/personal/${this.id}` });
@@ -284,7 +282,15 @@ body > .el-container {
 
 /deep/.shouye {
   margin-top: 10px;
-  margin-left: 300p;
+  background-color:#ffffff10;
+  border: lightpink;
+  float: right;
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+/deep/.shouye:hover{
+  background-color: #f38787c9;
 }
 
 /deep/.el-form-item__content {

@@ -73,13 +73,13 @@ export default {
 };
 </script>
 <style scoped>
-.el-main {
+/* .el-main {
   background-image: url("../assets/images/bg2.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
   height: 100%;
-}
+} */
 .search {
   margin: auto;
   margin-top: 90px;

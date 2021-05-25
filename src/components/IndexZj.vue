@@ -57,8 +57,8 @@ export default {
   /* color: #000000; */
 }
 .el-menu--horizontal > .el-menu-item.is-active {
-  border-bottom: 2px solid #52d1f8;
-  color: #ffffff;
+  border-bottom: 2px solid #52d1f800;
+  color: #f7a7a7;
 }
 .el-menu--horizontal > .el-menu-item {
   float: left;
@@ -66,6 +66,6 @@ export default {
   line-height: 60px;
   margin: 0;
   border-bottom: 2px solid transparent;
-  color: #f7a7a7;
+  color: #000000;
 }
 </style>

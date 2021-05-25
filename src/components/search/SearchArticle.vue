@@ -31,7 +31,6 @@
   </div>
 </template>
 <script>
-import ContentList from "../ContentList";
 import { mapGetters } from "vuex";
 import { mixin } from "../../mixins";
 

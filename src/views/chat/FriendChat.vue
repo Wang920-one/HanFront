@@ -125,7 +125,12 @@
           >
           </el-page-header>
         </el-header>
-
+        <!-- <JwChat-index
+          :taleList="list"
+          @enter="bindEnter"
+          v-model="inputMsg"
+          :toolConfig="tool"
+        /> -->
         <div id="chat">
           <div class="cebian">
             <card></card>
@@ -158,8 +163,6 @@ import {
   getListOfSubscribe,
   getListOfBeSubscribe,
 } from "../../api/index";
-import Card from '../../components/chat/card.vue';
-import Buttons from '../../components/chat/buttons.vue';
 
 export default {
   name: "friendchat",
@@ -172,6 +175,15 @@ export default {
       userDate: {}, //用户信息
       fansDate: [], //粉丝列表
       guanzDate: [], //关注列表
+      // // 现在只配置了 ["file", "video", "img", "hongbao", "more", "history"]
+      // show: ["file", "history", "img", ["文件1", "", "美图"]], // 二级数组中放自定义名称
+      // showEmoji: true, // 是否显示表情图标
+      // /**
+      //  * @description: 点击按钮的回调函数
+      //  * @param {*} type 当前点击的按钮
+      //  * @param {*} plyload 附加文件或者需要处理的数据
+      //  * @return {*}
+      //  */
     };
   },
   created() {
@@ -186,7 +198,7 @@ export default {
     list,
     buttons,
     message,
-    usertext
+    usertext,
   },
   computed: {
     ...mapGetters(["id", "loginIn", "userImage", "userName"]),
@@ -244,7 +256,7 @@ export default {
     attachImageUrl(srcurl) {
       return srcurl
         ? this.$store.state.HOST + srcurl
-        : this.$store.state.HOST + "../assets/images/defualt/user.png";
+        : this.$store.state.HOST + "../../assets/images/defualt/user.png";
     },
     hadleCommand(command) {
       if (command == "logout") {
@@ -264,13 +276,13 @@ export default {
 };
 </script>
 <style scoped>
-#bgImg {
+/* #bgImg {
   background-image: url("../../assets/images/bg2.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
   height: 100%;
-}
+} */
 .el-main {
   display: block;
   flex: 1;

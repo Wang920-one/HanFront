@@ -16,6 +16,7 @@
         <el-badge
           :hidden="item.unread==0"
           :value="item.unread"
+          v-show="isShow"
           class="item"
         ></el-badge>
       </li>
@@ -39,6 +40,7 @@ export default {
   data() {
     return {
       index: 0,
+      isShow: true,
       hideBadge: true,
       friendrecord: [], //好友未读消息数
       users: [],
@@ -48,12 +50,12 @@ export default {
   },
   created() {
     this.getMessageList(this.id);
-    // 每10秒刷新一次
+    // 每5秒刷新一次
     this.timer = setInterval(() => {
       this.users = [];
       this.getMessageList(this.id);
       this.index += 1;
-    }, 1000 * 10);
+    }, 1000 * 5);
   },
   mounted() {},
   computed: {
@@ -106,6 +108,7 @@ export default {
         });
     },
     changeCurrentSessionId: function (item) {
+      // this.$set(item, "isShow", false);
       this.$store.commit("setCurrentSessionId", item.friendId);
       let params = new URLSearchParams();
       //   this.form.actReview = !this.form.actReview;

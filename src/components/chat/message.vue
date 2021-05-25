@@ -31,9 +31,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { mixin } from "../../mixins";
-import {
-  getUserOfId,
-} from "../../api/index";
+import { getUserOfId } from "../../api/index";
 
 export default {
   name: "message",
@@ -44,7 +42,6 @@ export default {
       img: "../src/assets/images/1.jpg",
     };
   },
-  // computed: mapState(["sessions", "currentSessionId"]),
   computed: {
     ...mapGetters([
       "loginIn", //用户是否登录
@@ -54,32 +51,41 @@ export default {
       "userImage", //用户头像
     ]),
   },
-  created() {},
   mounted() {
     this.getImage();
+  },
+  created() {
+    // 每5秒刷新一次
+    this.timer = setInterval(() => {
+      // location.reload();
+    }, 1000 * 5);
   },
   methods: {
     //获取好友的头像信息
     getImage() {
-      getUserOfId(this.currentSessionId).then((res) => {
-        this.user = res;
-      }).catch((err) => {
-          this.$message({
-            showClose: true,
-            message: "头像信息获取失败",
-            type: "error",
+      if (this.currentSessionId != null) {
+        getUserOfId(this.currentSessionId)
+          .then((res) => {
+            this.user = res;
+          })
+          .catch((err) => {
+            this.$message({
+              showClose: true,
+              message: "头像信息获取失败",
+              type: "error",
+            });
           });
-        });
+      }
     },
   },
   directives: {
     /*这个是vue的自定义指令,官方文档有详细说明*/
-    // 发送消息后滚动到底部,这里无法使用原作者的方法，也未找到合理的方法解决，暂用setTimeout的方法模拟
+    // 发送消息后滚动到底部,未找到合理的方法解决，暂用setTimeout的方法模拟
     "scroll-bottom"(el) {
       //console.log(el.scrollTop);
       setTimeout(function () {
-        el.scrollTop += 9999;
-      }, 1);
+        el.scrollTop += 10000;
+      }, 0.1);
     },
   },
 };

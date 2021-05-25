@@ -58,6 +58,8 @@ export const getActiveOfId = (id) => get(`active/selectByPrimaryKey?acId=${id}`)
 export const setArticle = (params) => post(`article/add`, params);
 //查询所有
 export const getAllArticle = () => get(`article/allArticle`);
+//查询所有后端
+export const getAllArticles = () => get(`article/allArticles`);
 //根据id查询该详细信息
 export const getArticleOfId = (id) => get(`article/selectByPrimaryKey?id=${id}`);
 //根据用户id查询该用户的所有视频
@@ -76,6 +78,8 @@ export const shenHeArticle = (params) => post(`article/shenHe`, params);
 export const setVideo = (params) => post(`video/add`, params);
 //查询所有
 export const getAllVideo = () => get(`video/allVideo`);
+//查询所有后端
+export const getAllVideos = () => get(`video/allVideos`);
 //降序浏览量查询所有，推荐榜
 export const getAllVideoOfBrowse = () => get(`video/videoOfBrowse`);
 //降序收藏量查询所有
@@ -185,4 +189,4 @@ export const updateStatus = (params) => post(`message/updateStatus`, params);
 //查询与某个用户的的未读信息列表
 export const getFriendUnRead = (senderId, receiverId, friendId) => get(`message/allFriendUnRead?senderId=${senderId}&receiverId=${receiverId}&friendId=${friendId}`);
 //查询所有未读信息列表
-export const getAllUnRead = (id) => get(`message/allUnRead?userId=${id}`);
+export const getAllUnRead = (id,receiverId) => get(`message/allUnRead?userId=${id}&receiverId=${receiverId}`);

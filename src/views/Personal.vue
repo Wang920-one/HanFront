@@ -22,10 +22,6 @@
                 <el-divider></el-divider>
                 <div style="width:40%;float:left;font-size:20px">
                   <div>
-                    <!-- <el-avatar
-                      src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                      
-                    ></el-avatar> -->
                     <div
                       class="user-img"
                       style="margin-left:20%;float:left;"
@@ -1321,13 +1317,13 @@ export default {
 </script>
 
 <style scoped>
-#bgImg {
+/* #bgImg {
   background-image: url("../assets/images/bg2.jpg");
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: fixed;
   height: 100%;
-}
+} */
 .el-main {
   display: block;
   flex: 1;

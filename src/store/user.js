@@ -6,6 +6,7 @@ const user = {
         userName: '',        //用户昵称
         userAccount: '',     //用户账号
         userImage: '',       //用户头像
+        userBackImg: '',       //用户头像
     },
     getters: {
         id: state => {
@@ -49,6 +50,13 @@ const user = {
                 userImage = JSON.parse(window.sessionStorage.getItem('userImage'))
             }
             return userImage;
+        },
+        userBackImg: state => {
+            let userBackImg = state.userBackImg
+            if (!userBackImg) {
+                userBackImg = JSON.parse(window.sessionStorage.getItem('userBackImg'))
+            }
+            return userBackImg;
         }
     },
     mutations: {
@@ -76,7 +84,10 @@ const user = {
             state.userImage = userImage;
             window.sessionStorage.setItem('userImage', JSON.stringify(userImage));
         },
-
+        setUserBackImg: (state, userBackImg) => {
+            state.userBackImg = userBackImg;
+            window.sessionStorage.setItem('userBackImg', JSON.stringify(userBackImg));
+        },
     }
 }
 
