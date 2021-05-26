@@ -7,14 +7,20 @@
         :key="index"
       >
         <div class="kuo">
-          <img class="item-img" :src="attachImageUrl(item.pic)" />
+          <div class="item-img">
+            <img :src="attachImageUrl(item.pic)" />
+          </div>
+
           <div class="mask">
             <svg class="icon">
               <use xlink:href="#icon-bofang"></use>
             </svg>
           </div>
         </div>
-        <div v-show="lab" @click="goAlbum(item)">
+        <div
+          v-show="lab"
+          @click="goAlbum(item)"
+        >
           <p class="item-name">名称：{{ item.acName }}</p>
           <p class="item-name">地址：{{ item.acAddress }}</p>
           <p class="item-name">时间：{{ attachDate(item.acTime) }}</p>
@@ -26,7 +32,11 @@
           <p class="item-name">名称：{{ item.shopName }}</p>
           <p class="item-name">认证时间：{{ attachDate(item.shopYear) }}</p>
           <p class="item-name">粉丝量：{{ item.shopFans }}</p>
-          <a class="item-name" :href="item.shopHttp" target="_blank">
+          <a
+            class="item-name"
+            :href="item.shopHttp"
+            target="_blank"
+          >
             店铺链接
           </a>
         </div>
@@ -40,12 +50,17 @@ export default {
   name: "content-list1",
   mixins: [mixin],
   props: ["contentList1", "lab"],
+  data() {
+    return {
+      url: "",
+    };
+  },
   methods: {
     goAlbum(item) {
       this.$store.commit("setTempList", item);
       this.$router.push({ path: `activeDetail/${item.acId}` });
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -87,8 +102,12 @@ export default {
   padding-left: 2%;
 }
 .item-img {
+  width: 150px;
+  height: 220px;
+}
+.item-img img{
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
 }
 .item-img:hover {
   /* 鼠标放上去图片放大 */

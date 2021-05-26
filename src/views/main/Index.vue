@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <Head></Head>
     <el-container>
       <el-main id="bgImg">
@@ -17,7 +18,11 @@
                 class="box-card"
                 style="width:100%;background-color: #ffffff30;"
               >
-                <div slot="header" class="clearfix" style="text-align: center;">
+                <div
+                  slot="header"
+                  class="clearfix"
+                  style="text-align: center;"
+                >
                   <span>热门榜</span>
                 </div>
                 <div
@@ -26,7 +31,10 @@
                   class="text"
                   style="text-align: center;"
                 >
-                  <div class="item" @click="goAlbum(item)">
+                  <div
+                    class="item"
+                    @click="goAlbum(item)"
+                  >
                     {{ item.videoTitle }}
                   </div>
                 </div>
@@ -38,7 +46,11 @@
                 class="box-card"
                 style="width:100%;background-color: #ffffff30;"
               >
-                <div slot="header" class="clearfix" style="text-align: center;">
+                <div
+                  slot="header"
+                  class="clearfix"
+                  style="text-align: center;"
+                >
                   <span>推荐榜</span>
                 </div>
                 <div
@@ -47,24 +59,17 @@
                   class="text"
                   style="text-align: center;"
                 >
-                  <div class="item" @click="goAlbum(item)">
+                  <div
+                    class="item"
+                    @click="goAlbum(item)"
+                  >
                     {{ item.videoTitle }}
                   </div>
                 </div>
               </el-card>
             </div>
             <!-- 最新作品 -->
-            <div
-              class="section"
-              style="float: left;margin-left:20px;width:70%;height:100%"
-              v-for="(item, index) in articlesList"
-              :key="index"
-            >
-              <div class="section-title">
-                <i class="el-icon-refresh-right"></i>{{ item.name }}
-              </div>
-              <content-list :contentList="item.list"></content-list>
-            </div>
+            <content-list :contentList="articlesList"></content-list>
           </div>
         </div>
       </el-main>
@@ -86,59 +91,74 @@ import {
   getAllArticle,
   getAllVideo,
   getAllVideoOfBrowse,
-  getAllVideoOfThumse
+  getAllVideoOfThumse,
 } from "../../api/index";
 
 export default {
   data() {
     return {
       name: "index",
-      articlesList: [{ name: "动态", list: [] }],
+      articlesList: [],
+      videoList: [],
+      articleList: [],
       videoOfBrowse: [], //推荐榜
-      videoOfThumse: [] //热门榜
+      videoOfThumse: [], //热门榜
     };
   },
   created() {
     this.getVideo();
+    this.getArticle();
     this.getVideoOfBrowse();
     this.getVideoOfThumse();
-    // console.log(this.articlesList);
   },
   methods: {
     getVideoOfBrowse() {
       //获取推荐榜,按浏览量排序
       getAllVideoOfBrowse()
-        .then(res => {
+        .then((res) => {
           this.videoOfBrowse = res.slice(0, 5);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getVideoOfThumse() {
       //获取热门榜,按浏览量排序
       getAllVideoOfThumse()
-        .then(res => {
+        .then((res) => {
           this.videoOfThumse = res.slice(0, 5);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getVideo() {
       //获取前十个视频
       getAllVideo()
-        .then(res => {
-          this.articlesList[0].list = res.slice(0, 12);
+        .then((res) => {
+          this.articlesList = res.slice(0, 6);
         })
-        .catch(err => {
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    getArticle() {
+      //获取前十个视频
+      getAllArticle()
+        .then((res) => {
+          this.articleList = res.slice(0, 6);
+          for (let item of this.articleList) {
+            this.articlesList.push(item);
+          }
+        })
+        .catch((err) => {
           console.log(err);
         });
     },
     goAlbum(item) {
       this.$store.commit("setTempList", item);
       this.$router.push({ path: `DynamicDetails/${item.id}` });
-    }
+    },
   },
   components: {
     Head,
@@ -146,26 +166,21 @@ export default {
     IndexZj,
     contentList,
     ScrollTop,
-    Footer
-  }
+    Footer,
+  },
 };
 </script>
 
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
 /* 榜单 */
 .text {

@@ -32,7 +32,7 @@ export default {
     if (this.loginIn) {
       this.url = this.$store.state.HOST + this.userBackImg;
     } else {
-      this.url = this.$store.state.HOST +'/img/defualt/back.jpg';
+      this.url = this.$store.state.HOST +'/img/defualt/backs.jpg';
     }
   },
   components: {

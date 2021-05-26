@@ -3,197 +3,188 @@
 
     <Head></Head>
     <el-container>
-      <el-main id="bgImg">
-        <el-container style="background-color:#ffffff50;height:100%">
-          <el-header style="background-color:#ffffff50">
-            <el-page-header
-              @back="goBack"
-              content="详情页面"
-              style="margin-top:20px"
-            >
-            </el-page-header>
-          </el-header>
-          <el-container>
-            <el-main>
-              <div>
-                <div>
-                  <!-- 专栏标题 -->
-                  <div
-                    class="tiltle"
-                    style="margin-bottom:1%;text-align:center"
-                  >
-                    <span>{{ tempList.bioati }}</span>
-                    <br />
-                    <span>发布时间：{{ attachDate(tempList.atcTime) }}</span>
-                    <hr />
-                  </div>
+      <el-main>
+        <div style="text-align:center">
+          <el-button
+            type="primary"
+            class="goback"
+            @click="goBack"
+            icon="el-icon-back"
+          ></el-button>
+          <div class="words">
+            <h3>
+              详情界面
+            </h3>
+          </div>
+          <!-- 分割线 -->
+          <!-- <el-divider></el-divider> -->
+          <hr>
+        </div>
+        <div>
+          <div>
+            <div style="width:80%;float:right;margin-right:10%;background-color:#ffffff50">
+              <!-- 专栏展示 -->
+              <div
+                class="player-container"
+                style="height:100%;width:68%;float:left;margin-left:1%"
+              >
+                <p v-html="tempList.actText">{{ tempList.actText }}</p>
+              </div>
 
-                  <div style="width:80%;float:right;margin-right:10%;background-color:#ffffff50">
-                    <!-- 专栏展示 -->
+              <!-- 专栏作者 -->
+
+              <div style="width:25%;margin-right:5%;float:right">
+                <el-card style="background-color:#ffffff00;border-color:#ffffff00;box-shadow:none">
+                  <!-- 关注作者 -->
+                  <div style="margin-top:5%;padding-bottom:5%">
                     <div
-                      class="player-container"
-                      style="height:100%;width:68%;float:left;margin-left:1%"
+                      style="width:20%;float:left;cursor: pointer;"
+                      @click="goDetail(user)"
                     >
-                      <p v-html="tempList.actText">{{ tempList.actText }}</p>
+                      <img
+                        style="width: 100%;border-radius: 50%;"
+                        :src="attachImageUrl(user.userImage)"
+                      />
                     </div>
-
-                    <!-- 专栏作者 -->
-
-                    <div style="width:25%;margin-right:5%;float:right">
-                      <el-card style="background-color:#ffffff00;border-color:#ffffff00;box-shadow:none">
-                        <!-- 关注作者 -->
-                        <div style="margin-top:5%;padding-bottom:5%">
-                          <div
-                            style="width:20%;float:left;cursor: pointer;"
-                            @click="goDetail(user)"
-                          >
-                            <img
-                              style="width: 100%;border-radius: 50%;"
-                              :src="attachImageUrl(user.userImage)"
-                            />
-                          </div>
-                          <div style="width:50%;float:left;margin-top:2.5%">
-                            <span>{{ user.userName }}</span>
-                          </div>
-                          <div
-                            style="width:30%;float:right;"
-                            v-show="this.id != this.user.id"
-                          >
-                            <el-button
-                              round
-                              style="background-color:#f7a7a7;color:#ffffff"
-                              :style="{
+                    <div style="width:50%;float:left;margin-top:2.5%">
+                      <span>{{ user.userName }}</span>
+                    </div>
+                    <div
+                      style="width:30%;float:right;"
+                      v-show="this.id != this.user.id"
+                    >
+                      <el-button
+                        round
+                        style="background-color:#f7a7a7;color:#ffffff"
+                        :style="{
                                 backgroundColor: bg_color,
                                 color: ft_color
                               }"
-                              @click="changeGZ()"
-                            >
-                              {{ gz }}</el-button>
-                          </div>
-                        </div>
-                        <!-- 分割线 -->
-                        <br /><br />
-                        <hr />
-                        <!-- 专栏推荐 -->
-                        <span>其他专栏</span>
-                        <hr />
-                        <div
-                          v-for="(item, index) in userarticleList"
-                          :key="index"
-                        >
-                          <el-card style="height:90px;width:100%;background-color:#ffffff00;cursor: pointer;">
-                            <img
-                              style="width:20%;float:left;"
-                              :src="attachImageUrl(item.pic)"
-                              @click="goAlbum(item)"
-                            />
-                            <div style="
-                              float:left;margin-left:10%">
-                              <span style="font-size:15px">标题：{{ item.bioati }}</span>
-                              <br />
-                              <span style="font-size:15px">发布时间：{{ attachDate(item.atcTime) }}</span>
-                              <!-- <span style="font-size:8px;height:10px">{{
-                                item.atcDescribe
-                              }}</span> -->
-                            </div>
-                          </el-card>
-                          <hr />
-                        </div>
-                      </el-card>
+                        @click="changeGZ()"
+                      >
+                        {{ gz }}</el-button>
                     </div>
                   </div>
-                  <br />
-
-                  <!-- 专栏详情界面 -->
-                  <div style="margin-left:10%;margin-right:10%;height:20%;margin-top:30%;">
+                  <!-- 分割线 -->
+                  <br /><br />
+                  <hr />
+                  <!-- 专栏推荐 -->
+                  <span>其他专栏</span>
+                  <hr />
+                  <div
+                    v-for="(item, index) in userarticleList"
+                    :key="index"
+                  >
+                    <el-card style="height:90px;width:100%;background-color:#ffffff00;cursor: pointer;">
+                      <img
+                        style="width:20%;float:left;"
+                        :src="attachImageUrl(item.pic)"
+                        @click="goAlbum(item)"
+                      />
+                      <div style="
+                              float:left;margin-left:10%">
+                        <span style="font-size:15px">{{ item.bioati }}</span>
+                        <br />
+                        <span style="font-size:8px">{{ attachDate(item.atcTime) }}</span>
+                        <!-- <span style="font-size:8px;height:10px">{{
+                                item.atcDescribe
+                              }}</span> -->
+                      </div>
+                    </el-card>
                     <hr />
-                    <div>
-                      <div
-                        class="dianzan_switch"
-                        style="float:left"
-                      >
-                        <el-button
-                          icon="iconfont icon-dianzan"
-                          :style="{
+                  </div>
+                </el-card>
+              </div>
+            </div>
+            <br />
+
+            <!-- 专栏详情界面 -->
+            <div style="margin-left:10%;margin-right:10%;height:20%;margin-top:30%;">
+              <hr />
+              <div>
+                <div
+                  class="dianzan_switch"
+                  style="float:left"
+                >
+                  <el-button
+                    icon="iconfont icon-dianzan"
+                    :style="{
                             backgroundColor: bg_color1,
                             color: ft_color1
                           }"
-                          circle
-                          @click="changeDZ()"
-                        >{{ tempList.atcThumes }} {{ dz }}</el-button>
-                      </div>
-                      <div style="margin-left:2%;float:left">
-                        <el-button
-                          :style="{
+                    circle
+                    @click="changeDZ()"
+                  >{{ tempList.atcThumes }} {{ dz }}</el-button>
+                </div>
+                <div style="margin-left:2%;float:left">
+                  <el-button
+                    :style="{
                             backgroundColor: bg_color2,
                             color: ft_color2
                           }"
-                          icon="iconfont icon-shoucang"
-                          circle
-                          @click="changeSC()"
-                        >{{ tempList.atcSc }} {{ sc }}</el-button>
-                      </div>
-                      <div style="margin-left:2%;float:left">
-                        <el-button
-                          style="background-color:#f7a7a7;color:#ffffff"
-                          icon="iconfont icon-shouye1"
-                          circle
-                          @click="ShareLink()"
-                        >点击分享</el-button>
-                      </div>
-                      <div style="margin-left:2%;float:left">
-                        <el-button
-                          style="background-color:#f7a7a7;color:#ffffff"
-                          icon="iconfont icon-yanjing"
-                          circle
-                        >{{ tempList.atcBrowse }} 浏览</el-button>
-                      </div>
-                    </div>
-                    <br />
-                    <br />
-                    <hr />
-                    <div>
-                      <h3>{{ tempList.bioati }}</h3>
-                      <span>{{ user.userName }}
-                        {{ attachDate(tempList.atcTime) }}</span><br />
-                      <span>{{ tempList.atcDescribe }}</span>
-                    </div>
-                    <hr />
-                  </div>
-
-                  <!-- 评论 -->
-                  <comment
-                    :playId="articleid"
-                    :type="1"
-                  ></comment>
-                  <!-- 复制链接 -->
-                  <el-dialog
-                    title="复制链接"
-                    :visible.sync="linkVisible"
-                    width="300px"
-                    center
-                  >
-                    <div>
-                      <a :href="config.value">{{config.value}}</a>
-                    </div>
-                    <span slot="footer">
-                      <el-button
-                        size="mini"
-                        @click="linkVisible = false"
-                      >取消</el-button>
-                      <el-button
-                        size="mini"
-                        class="tag-copy"
-                        :data-clipboard-text="config.value"
-                        @click="copyShareLink"
-                      >复制链接</el-button>
-                    </span>
-                  </el-dialog>
+                    icon="iconfont icon-shoucang"
+                    circle
+                    @click="changeSC()"
+                  >{{ tempList.atcSc }} {{ sc }}</el-button>
+                </div>
+                <div style="margin-left:2%;float:left">
+                  <el-button
+                    style="background-color:#f7a7a7;color:#ffffff"
+                    icon="iconfont icon-shouye1"
+                    circle
+                    @click="ShareLink()"
+                  >点击分享</el-button>
+                </div>
+                <div style="margin-left:2%;float:left">
+                  <el-button
+                    style="background-color:#f7a7a7;color:#ffffff"
+                    icon="iconfont icon-yanjing"
+                    circle
+                  >{{ tempList.atcBrowse }} 浏览</el-button>
                 </div>
               </div>
-            </el-main>
-          </el-container>
-        </el-container>
+              <br />
+              <br />
+              <hr />
+              <div>
+                <h3>{{ tempList.bioati }}</h3>
+                <span>{{ user.userName }}
+                  {{ attachDate(tempList.atcTime) }}</span><br />
+                <span>{{ tempList.atcDescribe }}</span>
+              </div>
+              <hr />
+            </div>
+
+            <!-- 评论 -->
+            <comment
+              :playId="articleid"
+              :type="1"
+            ></comment>
+            <!-- 复制链接 -->
+            <el-dialog
+              title="复制链接"
+              :visible.sync="linkVisible"
+              width="300px"
+              center
+            >
+              <div>
+                <a :href="config.value">{{config.value}}</a>
+              </div>
+              <span slot="footer">
+                <el-button
+                  size="mini"
+                  @click="linkVisible = false"
+                >取消</el-button>
+                <el-button
+                  size="mini"
+                  class="tag-copy"
+                  :data-clipboard-text="config.value"
+                  @click="copyShareLink"
+                >复制链接</el-button>
+              </span>
+            </el-dialog>
+          </div>
+        </div>
       </el-main>
     </el-container>
     <scroll-top />
@@ -607,21 +598,47 @@ export default {
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
+  background-size: 100% 100%;
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 /deep/.el-card__body {
   padding: 10px;
 }

@@ -3,7 +3,7 @@
 
     <Head />
     <el-container>
-      <el-main id="bgimg">
+      <el-main>
         <div class="search">
           <nav
             class="searchList-nav"
@@ -55,7 +55,7 @@ export default {
     searchVideo,
     searchActive,
     searchShop,
-    searchUser
+    searchUser,
   },
   data() {
     return {
@@ -73,13 +73,16 @@ export default {
 };
 </script>
 <style scoped>
-/* .el-main {
-  background-image: url("../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
+.el-main {
+  display: block;
+  flex: 1;
+  flex-basis: auto;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
 .search {
   margin: auto;
   margin-top: 90px;
@@ -95,7 +98,7 @@ export default {
   justify-content: space-around;
   margin-top: 20px;
   font-size: 1.5rem;
-  color: #5a5a5a;
+  color: #000000;
 }
 .searchList-nav span {
   line-height: 50px;
@@ -104,6 +107,7 @@ export default {
 
 .isActive {
   font-weight: 600;
-  border-bottom: 5px solid #000000;
+  color: #f7a7a7;
+  border-bottom: 5px solid #ffffff;
 }
 </style>

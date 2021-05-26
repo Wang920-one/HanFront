@@ -6,8 +6,14 @@
         v-for="(item, index) in contentList"
         :key="index"
       >
-        <div class="kuo" @click="goAlbum(item, item.bioati)">
-          <img class="item-img" :src="attachImageUrl(item.pic)" />
+        <div
+          class="kuo"
+          @click="goAlbum(item, item.bioati)"
+        >
+          <div class="item-img">
+            <img :src="attachImageUrl(item.pic)" />
+          </div>
+
           <div class="mask">
             <svg class="icon">
               <use xlink:href="#icon-bofang"></use>
@@ -35,8 +41,8 @@ export default {
         //视频
         this.$router.push({ path: `DynamicDetails/${item.id}` });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
@@ -56,16 +62,21 @@ export default {
   width: 14%;
   margin: 20px 1%;
   overflow: hidden;
-  border-radius: 4px;
+  /* border-radius: 4px; */
   position: relative;
   text-align: center;
-  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.164);
-  background-color: rgba(240, 248, 255, 0.5);
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+  background-color: rgba(240, 248, 255, 0);
 }
-
 .content-item:hover {
   /* 鼠标放上去阴影加深 */
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.267);
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.15);
+}
+.content-item p{
+  font-size: 18px;
+  font-family: "楷体";
+  float: left;
+  margin-top: 5px;
 }
 .item-name {
   overflow: hidden;
@@ -75,11 +86,16 @@ export default {
   -webkit-line-clamp: 2;
   margin: 10px 8px;
 }
-.item-img {
-  margin-top: 15%;
+.item-img{
+  
   width: 100%;
-  /* height: 100%; */
-  transition: all 0.4s ease;
+  height: 9em;
+}
+.item-img img{
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  /* transition: all 0.4s ease; */
 }
 .item-img:hover {
   /* 鼠标放上去图片放大 */
@@ -87,9 +103,9 @@ export default {
 }
 .kuo,
 .mask {
-  width: 80%;
+  /* width: 80%; */
   padding-bottom: 100%;
-  padding-left: 10%;
+  /* padding-left: 10%; */
   height: 0;
   overflow: hidden;
   /* background-color: rgba(240, 248, 255, 0.5); */

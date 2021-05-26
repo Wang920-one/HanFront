@@ -3,163 +3,169 @@
 
     <Head></Head>
     <el-container>
-      <el-main id="bgImg">
-        <el-container style="background-color:#ffffff50;height:100%">
-          <el-header style="background-color:#ffffff50">
-            <el-page-header
-              @back="goBack"
-              content="详情页面"
-              style="margin-top:20px"
-            >
-            </el-page-header>
-          </el-header>
-          <div class="user-album">
-            <div class="album-slide">
-              <div class="user-img">
-                <img :src="attachImageUrl(user.userImage)" />
-              </div>
-              <ul class="info">
-                <li v-if="user.userSex == 0 || user.userSex == 1">
-                  性别：{{ changeSex(user.userSex) }}
-                </li>
-                <li>生日：{{ attachDate(user.userBirthday) }}</li>
-                <li>地区：{{ user.userAddress }}</li>
-              </ul>
+      <el-main>
+        <div style="text-align:center">
+          <el-button
+            type="primary"
+            class="goback"
+            @click="goBack"
+            icon="el-icon-back"
+          ></el-button>
+          <div class="words">
+            <h3>
+              详情界面
+            </h3>
+          </div>
+          <!-- 分割线 -->
+          <el-divider></el-divider>
+          <!-- <hr> -->
+        </div>
+        <div class="user-album">
+          <div class="album-slide">
+            <div class="user-img">
+              <img :src="attachImageUrl(user.userImage)" />
             </div>
-            <div class="album-content">
-              <div class="intro">
-                <h2>昵称：{{ user.userName }}</h2>
-                <span>个性签名：{{ user.userSign }}</span>
-                <div
-                  style="float:right"
-                  v-show="this.id != this.user.id"
-                >
-                  <el-button
-                    round
-                    style="background-color:#fad0d0;color:#ffffff"
-                    @click="handleSend(user.id)"
-                  >私信</el-button>
-                  <el-button
-                    round
-                    style="background-color:#f7a7a7;color:#ffffff"
-                    :style="{
+            <ul class="info">
+              <li v-if="user.userSex == 0 || user.userSex == 1">
+                性别：{{ changeSex(user.userSex) }}
+              </li>
+              <li>生日：{{ attachDate(user.userBirthday) }}</li>
+              <li>地区：{{ user.userAddress }}</li>
+            </ul>
+          </div>
+          <div class="album-content">
+            <div class="intro">
+              <h2>昵称：{{ user.userName }}</h2>
+              <span>个性签名：{{ user.userSign }}</span>
+              <div
+                style="float:right"
+                v-show="this.id != this.user.id"
+              >
+                <el-button
+                  round
+                  style="background-color:#fad0d0;color:#ffffff"
+                  @click="handleSend(user.id)"
+                >私信</el-button>
+                <el-button
+                  round
+                  style="background-color:#f7a7a7;color:#ffffff"
+                  :style="{
                       backgroundColor: bg_color,
                       color: ft_color
                     }"
-                    @click="changeGZ()"
-                  >
-                    {{ gz }}</el-button>
-                </div>
-              </div>
-              <el-dialog
-                title="发送消息"
-                :visible.sync="sendVisible"
-                width="500px"
-                center
-              >
-                <div align="center">
-                  <el-input
-                    type="textarea"
-                    :rows="2"
-                    placeholder="请输入内容"
-                    v-model="textarea"
-                  >
-                  </el-input>
-                </div>
-                <span slot="footer">
-                  <el-button
-                    size="mini"
-                    @click="sendVisible = false"
-                  >取消</el-button>
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="sendMessage()"
-                  >发送</el-button>
-                </span>
-              </el-dialog>
-              <div class="content">
-                <el-tabs
-                  type="border-card"
-                  v-model="activeName"
+                  @click="changeGZ()"
                 >
-                  <el-tab-pane
-                    class="Arti"
-                    label="专栏"
-                    name="article"
-                  >
-                    <h1 class="title">
-                      <slot name="title"></slot>
-                      <hr />
-                    </h1>
-                    <ul>
-                      <li>
-                        <div class="article-item">
-                          <span class="item-index"></span>
-                          <span class="item-title">标题</span>
-                          <span class="item-name">分类</span>
-                          <span class="item-intro">描述</span>
-                        </div>
-                      </li>
-                      <li
-                        v-for="(item, index) in articlelist"
-                        :key="index"
-                      >
-                        <div
-                          class="article-item"
-                          @click="goAlbum(item)"
-                        >
-                          <span class="item-index">
-                            {{ index + 1 }}
-                          </span>
-                          <span class="item-title">{{ item.bioati }}</span>
-                          <span class="item-name">{{ item.atcType }}</span>
-                          <span class="item-intro">{{ item.atcDescribe }}</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </el-tab-pane>
-                  <el-tab-pane
-                    class="Vide"
-                    label="视频"
-                    name="video"
-                  >
-                    <h1 class="title">
-                      <slot name="title"></slot>
-                      <hr />
-                    </h1>
-                    <ul>
-                      <li>
-                        <div class="video-item">
-                          <span class="item-index"></span>
-                          <span class="item-title">标题</span>
-                          <span class="item-name">分类</span>
-                          <span class="item-intro">描述</span>
-                        </div>
-                      </li>
-                      <li
-                        v-for="(item, index) in videolist"
-                        :key="index"
-                      >
-                        <div
-                          class="video-item"
-                          @click="goAlbum1(item)"
-                        >
-                          <span class="item-index">
-                            {{ index + 1 }}
-                          </span>
-                          <span class="item-title">{{ item.videoTitle }}</span>
-                          <span class="item-name">{{ item.videoType }}</span>
-                          <span class="item-intro">{{ item.videoDes }}</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </el-tab-pane>
-                </el-tabs>
+                  {{ gz }}</el-button>
               </div>
             </div>
+            <el-dialog
+              title="发送消息"
+              :visible.sync="sendVisible"
+              width="500px"
+              center
+            >
+              <div align="center">
+                <el-input
+                  type="textarea"
+                  :rows="2"
+                  placeholder="请输入内容"
+                  v-model="textarea"
+                >
+                </el-input>
+              </div>
+              <span slot="footer">
+                <el-button
+                  size="mini"
+                  @click="sendVisible = false"
+                >取消</el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  @click="sendMessage()"
+                >发送</el-button>
+              </span>
+            </el-dialog>
+            <div class="content">
+              <el-tabs
+                type="border-card"
+                v-model="activeName"
+              >
+                <el-tab-pane
+                  class="Arti"
+                  label="专栏"
+                  name="article"
+                >
+                  <h1 class="title">
+                    <slot name="title"></slot>
+                    <hr />
+                  </h1>
+                  <ul>
+                    <li>
+                      <div class="article-item">
+                        <span class="item-index"></span>
+                        <span class="item-title">标题</span>
+                        <span class="item-name">分类</span>
+                        <span class="item-intro">描述</span>
+                      </div>
+                    </li>
+                    <li
+                      v-for="(item, index) in articlelist"
+                      :key="index"
+                    >
+                      <div
+                        class="article-item"
+                        @click="goAlbum(item)"
+                      >
+                        <span class="item-index">
+                          {{ index + 1 }}
+                        </span>
+                        <span class="item-title">{{ item.bioati }}</span>
+                        <span class="item-name">{{ item.atcType }}</span>
+                        <span class="item-intro">{{ item.atcDescribe }}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </el-tab-pane>
+                <el-tab-pane
+                  class="Vide"
+                  label="视频"
+                  name="video"
+                >
+                  <h1 class="title">
+                    <slot name="title"></slot>
+                    <hr />
+                  </h1>
+                  <ul>
+                    <li>
+                      <div class="video-item">
+                        <span class="item-index"></span>
+                        <span class="item-title">标题</span>
+                        <span class="item-name">分类</span>
+                        <span class="item-intro">描述</span>
+                      </div>
+                    </li>
+                    <li
+                      v-for="(item, index) in videolist"
+                      :key="index"
+                    >
+                      <div
+                        class="video-item"
+                        @click="goAlbum1(item)"
+                      >
+                        <span class="item-index">
+                          {{ index + 1 }}
+                        </span>
+                        <span class="item-title">{{ item.videoTitle }}</span>
+                        <span class="item-name">{{ item.videoType }}</span>
+                        <span class="item-intro">{{ item.videoDes }}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
           </div>
-        </el-container>
+        </div>
       </el-main>
     </el-container>
     <scroll-top />
@@ -179,7 +185,7 @@ import {
   getListOfSubscribe,
   setSubscribe,
   delSubscribe,
-  setMessage
+  setMessage,
 } from "../../api/index";
 export default {
   name: "author-detail",
@@ -391,21 +397,47 @@ export default {
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
+  background-size: 100% 100%;
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 .el-tabs--border-card {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #dcdfe675;
@@ -424,7 +456,7 @@ export default {
 }
 .user-album {
   margin-top: 35px;
-  padding-top: 150px;
+  padding-top: 100px;
   /* background-color: $theme-background-color; */
 }
 .user-album::before {
@@ -434,7 +466,7 @@ export default {
   position: absolute;
   top: 0;
   width: 100%;
-  height: 35px + 150px;
+  height: 35px + 100px;
 }
 .album-slide {
   float: left;
@@ -478,7 +510,7 @@ export default {
   color: rgba(0, 0, 0, 0.5);
 }
 .content {
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 0%;
   padding-bottom: 20%;
 }

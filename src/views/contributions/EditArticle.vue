@@ -1,42 +1,51 @@
 <template>
   <div>
+
     <Head></Head>
     <el-container>
-      <el-main id="bgImg">
-        <el-page-header @back="goBack" content="详情页面"> </el-page-header>
-        <el-container>
-          <el-header
-            ><h3
-              style="font-size: 19px;font-family: '楷体';color:#f7a7a7;text-align:center"
-            >
-              发布专栏
+      <el-main>
+        <div style="text-align:center">
+          <el-button
+            type="primary"
+            class="goback"
+            @click="goBack"
+            icon="el-icon-back"
+          ></el-button>
+          <div class="words">
+            <h3>
+              修改专栏信息
             </h3>
-            <!-- 分割线 -->
-            <el-divider></el-divider
-          ></el-header>
-          <el-container>
-            <el-main
-              style="text-align:c
-            enter;"
+          </div>
+          <!-- 分割线 -->
+          <!-- <el-divider></el-divider> -->
+          <hr>
+        </div>
+        <div style="text-align:c
+            enter;">
+          <el-form
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            label-width="70px"
+            class="demo-ruleForm"
+            style="width:80%;margin-left:10%"
+          >
+            <el-form-item
+              label="标题"
+              prop="bioati"
             >
-              <el-form
-                :model="ruleForm"
-                :rules="rules"
-                ref="ruleForm"
-                label-width="70px"
-                class="demo-ruleForm"
-                style="width:80%;margin-left:10%"
-              >
-                <el-form-item label="标题" prop="bioati">
-                  <el-input v-model="ruleForm.bioati"></el-input>
-                </el-form-item>
-                <el-form-item label="描述" prop="atcDescribe">
-                  <el-input
-                    type="textarea"
-                    v-model="ruleForm.atcDescribe"
-                  ></el-input>
-                </el-form-item>
-                <!-- <el-form-item label="分类" prop="atcType">
+              <el-input v-model="ruleForm.bioati"></el-input>
+            </el-form-item>
+            <el-form-item
+              label="描述"
+              prop="atcDescribe"
+            >
+              <el-input
+                type="textarea"
+                v-model="ruleForm.atcDescribe"
+              ></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="分类" prop="atcType">
                   <el-checkbox-group v-model="ruleForm.atcType">
                     <el-checkbox label="妆容" name="type"></el-checkbox>
                     <el-checkbox label="发型" name="type"></el-checkbox>
@@ -44,7 +53,7 @@
                     <el-checkbox label="种草" name="type"></el-checkbox>
                   </el-checkbox-group>
                 </el-form-item> -->
-                <!-- <el-form-item label="封面" prop="pic">
+            <!-- <el-form-item label="封面" prop="pic">
                   <el-upload
                     action="#"
                     list-type="picture-card"
@@ -86,28 +95,30 @@
                     <img width="100%" :src="dialogImageUrl" alt="" />
                   </el-dialog>
                 </el-form-item> -->
-                <el-form-item label="内容" prop="actText">
-                  <quill-editor
-                    v-model="ruleForm.actText"
-                    ref="myQuillEditor"
-                  ></quill-editor>
-                  <!-- <qul-editor v-model="ruleForm.actText"></qul-editor> -->
-                  <!-- :options="editorOption" -->
-                </el-form-item>
+            <el-form-item
+              label="内容"
+              prop="actText"
+            >
+              <quill-editor
+                v-model="ruleForm.actText"
+                ref="myQuillEditor"
+              ></quill-editor>
+              <!-- <qul-editor v-model="ruleForm.actText"></qul-editor> -->
+              <!-- :options="editorOption" -->
+            </el-form-item>
 
-                <el-form-item>
-                  <!-- <quill-show :quillHtmlStr.sync="quillHtmlStr"></quill-show> -->
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="submitForm()"
-                    >发布</el-button
-                  >
-                  <el-button @click="resetForm('ruleForm')">重置</el-button>
-                </el-form-item>
-              </el-form>
-            </el-main>
-          </el-container>
-        </el-container>
+            <el-form-item>
+              <!-- <quill-show :quillHtmlStr.sync="quillHtmlStr"></quill-show> -->
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                type="primary"
+                @click="submitForm()"
+              >发布</el-button>
+              <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </el-main>
     </el-container>
     <scroll-top />
@@ -127,7 +138,7 @@ import {
   setArticle,
   getUserOfId,
   getArticleOfId,
-  updateArticle
+  updateArticle,
 } from "../../api/index";
 
 export default {
@@ -145,15 +156,20 @@ export default {
         atcDescribe: "",
         pic: "",
         atcType: [],
-        actText: ""
+        actText: "",
       },
       rules: {
         bioati: [
           { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 3, max: 25, message: "长度在 3 到 25 个字符", trigger: "blur" }
+          {
+            min: 3,
+            max: 25,
+            message: "长度在 3 到 25 个字符",
+            trigger: "blur",
+          },
         ],
         atcDescribe: [
-          { required: true, message: "请输入描述", trigger: "blur" }
+          { required: true, message: "请输入描述", trigger: "blur" },
         ],
         pic: [{ required: true, message: "请上传封面" }],
         atcType: [
@@ -161,16 +177,16 @@ export default {
             type: "array",
             required: true,
             message: "请至少选择一个标签",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         actText: [
           {
             required: true,
-            message: "请输入内容"
-          }
-        ]
-      }
+            message: "请输入内容",
+          },
+        ],
+      },
     };
   },
   created() {
@@ -186,14 +202,14 @@ export default {
     },
     ...mapGetters([
       "loginIn", //用户是否登录
-      "id" //当前登录用户id
-    ])
+      "id", //当前登录用户id
+    ]),
   },
   components: {
     Head,
     Footer,
     ScrollTop,
-    qulEditor
+    qulEditor,
     // tinymceEditor,
     // EditorBar,
   },
@@ -203,13 +219,13 @@ export default {
     },
     getMsg(articleid) {
       getArticleOfId(articleid)
-        .then(res => {
+        .then((res) => {
           this.ruleForm.bioati = res.bioati;
           this.ruleForm.atcDescribe = res.atcDescribe;
           this.ruleForm.actText = res.actText;
           //   this.ruleForm.videoType = res.videoType;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -219,22 +235,22 @@ export default {
       params.append("useId", this.id);
       params.append("bioati", this.ruleForm.bioati);
       params.append("atcDescribe", this.ruleForm.atcDescribe);
-    //   params.append("atcType", this.ruleForm.atcType);
+      //   params.append("atcType", this.ruleForm.atcType);
       params.append("actText", this.ruleForm.actText);
-      updateArticle(params).then(res => {
+      updateArticle(params).then((res) => {
         if (res.code == 1) {
           //   this.getDate();
           this.$router.push({ path: `/personal/${this.id}` });
           this.$message({
             showClose: true,
             message: "修改成功",
-            type: "success"
+            type: "success",
           });
         } else {
           this.$message({
             showClose: true,
             message: "修改失败",
-            type: "error"
+            type: "error",
           });
         }
       });
@@ -251,18 +267,52 @@ export default {
     },
     handleDownload(file) {
       console.log(file);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
+.el-main {
+  display: block;
+  flex: 1;
+  flex-basis: auto;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
   background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 /* 编辑器内部出现滚动条 */
 /deep/.ql-container {
   overflow-y: auto;

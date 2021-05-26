@@ -1,69 +1,98 @@
 <template>
   <div>
+
     <Head></Head>
     <el-container>
-      <el-main id="bgImg" style="min-height:900px">
-        <el-page-header @back="goBack" content="详情页面"> </el-page-header>
-        <el-container>
-          <el-header>
-            <h3
-              style="font-size: 19px;font-family: '楷体';color:#f7a7a7;text-align:center"
-            >
+      <el-main>
+        <div style="text-align:center">
+          <el-button
+            type="primary"
+            class="goback"
+            @click="goBack"
+            icon="el-icon-back"
+          ></el-button>
+          <div class="words">
+            <h3>
               发布视频
             </h3>
-            <!-- 分割线 -->
-            <el-divider></el-divider>
-          </el-header>
-          <el-container>
-            <el-main>
-              <el-form
-                :model="ruleForm"
-                :rules="rules"
-                ref="ruleForm"
-                label-width="70px"
-                class="demo-ruleForm"
-                action=""
-                id="tf"
-                enctype="multipart/form-data"
-                style="width:80%;margin-left:10%"
-              >
-                <el-form-item label="标题" prop="videoTitle">
-                  <el-input v-model="ruleForm.videoTitle"></el-input>
-                </el-form-item>
-                <el-form-item label="描述" prop="videoDes">
-                  <el-input
-                    type="textarea"
-                    v-model="ruleForm.videoDes"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="分类" prop="videoType">
-                  <el-checkbox-group v-model="ruleForm.videoType">
-                    <el-checkbox label="妆容" name="type"></el-checkbox>
-                    <el-checkbox label="发型" name="type"></el-checkbox>
-                    <el-checkbox label="搭配" name="type"></el-checkbox>
-                    <el-checkbox label="种草" name="type"></el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
+          </div>
+          <!-- 分割线 -->
+          <el-divider></el-divider>
+          <!-- <hr> -->
+        </div>
+        <div>
+          <el-form
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            label-width="70px"
+            class="demo-ruleForm"
+            action=""
+            id="tf"
+            enctype="multipart/form-data"
+            style="width:80%;margin-left:10%"
+          >
+            <el-form-item
+              label="标题"
+              prop="videoTitle"
+            >
+              <el-input v-model="ruleForm.videoTitle"></el-input>
+            </el-form-item>
+            <el-form-item
+              label="描述"
+              prop="videoDes"
+            >
+              <el-input
+                type="textarea"
+                v-model="ruleForm.videoDes"
+              ></el-input>
+            </el-form-item>
+            <el-form-item
+              label="分类"
+              prop="videoType"
+            >
+              <el-checkbox-group v-model="ruleForm.videoType">
+                <el-checkbox
+                  label="妆容"
+                  name="type"
+                ></el-checkbox>
+                <el-checkbox
+                  label="发型"
+                  name="type"
+                ></el-checkbox>
+                <el-checkbox
+                  label="搭配"
+                  name="type"
+                ></el-checkbox>
+                <el-checkbox
+                  label="种草"
+                  name="type"
+                ></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
 
-                <!-- <el-form-item label="封面" prop="pic"> </el-form-item> -->
+            <!-- <el-form-item label="封面" prop="pic"> </el-form-item> -->
 
-                <el-form-item
-                  label="添加视频"
-                  class="video-upload"
-                  prop="videoFile"
-                >
-                  <input type="file" name="file" />
-                </el-form-item>
+            <el-form-item
+              label="添加视频"
+              class="video-upload"
+              prop="videoFile"
+            >
+              <input
+                type="file"
+                name="file"
+              />
+            </el-form-item>
 
-                <el-form-item>
-                  <el-button type="primary" @click="submitForm">发布</el-button>
-                  <el-button @click="resetForm('ruleForm')">重置</el-button>
-                </el-form-item>
-              </el-form>
-
-            </el-main>
-          </el-container>
-        </el-container>
+            <el-form-item>
+              <el-button
+                type="primary"
+                @click="submitForm"
+              >发布</el-button>
+              <el-button @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </el-main>
     </el-container>
     <scroll-top />
@@ -94,7 +123,7 @@ export default {
       videoFlag: false, //刚开始的时候显示为flase
       videoUploadPercent: "0%", //进度条刚开始的时候为0%
       paramsdata: {
-        参数: "参数值" //添加其他参数
+        参数: "参数值", //添加其他参数
       },
       dialogImageUrl: "",
       dialogVisible: false,
@@ -102,7 +131,7 @@ export default {
       ruleForm: {
         videoTitle: "",
         videoDes: "",
-        videoType: []
+        videoType: [],
       },
       rules: {
         videoTitle: [
@@ -111,8 +140,8 @@ export default {
             min: 3,
             max: 10,
             message: "长度在 3 到 10 个字符",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
         videoDes: [{ required: true, message: "请输入描述", trigger: "blur" }],
         videoType: [
@@ -120,10 +149,10 @@ export default {
             type: "array",
             required: true,
             message: "请至少选择一个标签",
-            trigger: "blur"
-          }
-        ]
-      }
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   mounted() {
@@ -132,13 +161,13 @@ export default {
   computed: {
     ...mapGetters([
       "loginIn", //用户是否登录
-      "id" //当前登录用户id
-    ])
+      "id", //当前登录用户id
+    ]),
   },
   components: {
     Head,
     Footer,
-    ScrollTop
+    ScrollTop,
   },
   methods: {
     goBack() {
@@ -155,7 +184,7 @@ export default {
       form.append("videoType", this.ruleForm.videoType);
       form.append("videoFile", this.ruleForm.file);
       var req = new XMLHttpRequest();
-      req.onreadystatechange = function() {
+      req.onreadystatechange = function () {
         //req.readyState == 4 获取到返回的完整数据
         //req.status == 200 和后台正常交互完成
         if (req.readyState == 4 && req.status == 200) {
@@ -165,13 +194,13 @@ export default {
             _this.$message({
               showClose: true,
               message: res.msg,
-              type: "success"
+              type: "success",
             });
           } else {
             _this.$message({
               showClose: true,
               message: "发布失败",
-              type: "error"
+              type: "error",
             });
           }
         }
@@ -183,18 +212,51 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-       
-  }
+  },
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
+.el-main {
+  display: block;
+  flex: 1;
+  flex-basis: auto;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
   background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 /* 编辑器内部出现滚动条 */
 /deep/.ql-container {
   overflow-y: auto;

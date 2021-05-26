@@ -1,205 +1,194 @@
 <template>
   <div>
-
     <Head></Head>
     <el-container>
-      <el-main id="bgImg">
-        <el-container style="background-color:#ffffff50;height:100%">
-          <el-header style="background-color:#ffffff50">
-            <el-page-header
-              @back="goBack"
-              content="详情页面"
-              style="margin-top:20px"
-            >
-            </el-page-header>
-          </el-header>
+      <el-main>
+        <div style="text-align:center">
+          <el-button
+            type="primary"
+            class="goback"
+            @click="goBack"
+            icon="el-icon-back"
+          ></el-button>
+          <div class="words">
+            <h3>
+              详情界面
+            </h3>
+          </div>
+          <!-- 分割线 -->
+          <!-- <el-divider></el-divider> -->
+          <hr>
+        </div>
+        <div>
+          <div>
+            <div style="width:80%;float:right;margin-right:10%;background-color:#ffffff50">
+              <!-- 视频播放 -->
+              <div
+                class="player-container"
+                style="height:100%;width:68%;float:left;"
+              >
+                <video-player
+                  class="vjs-custom-skin"
+                  :options="playerOptions"
+                ></video-player>
+              </div>
 
-          <el-container>
-            <el-main>
-              <div>
-                <div>
-                  <!-- 视频标题 -->
-                  <div
-                    class="tiltle"
-                    style="margin-bottom:1%;text-align:center"
-                  >
-                    <span>{{ tempList.videoTitle }}</span>
-                    <br />
-                    <span>发布时间：{{ attachDate(tempList.videoTime) }}</span>
-                    <hr />
-                  </div>
+              <!-- 视频作者 -->
 
-                  <div style="width:80%;float:right;margin-right:10%;background-color:#ffffff50">
-                    <!-- 视频播放 -->
+              <div style="width:25%;margin-right:5%;float:right">
+                <el-card style="background-color:#ffffff00;border-color:#ffffff00;box-shadow:none">
+                  <!-- 关注作者 -->
+                  <div style="margin-top:5%;padding-bottom:5%">
                     <div
-                      class="player-container"
-                      style="height:100%;width:68%;float:left;"
+                      style="width:20%;float:left;cursor: pointer;"
+                      @click="goDetail(user)"
                     >
-                      <video-player
-                        class="vjs-custom-skin"
-                        :options="playerOptions"
-                      ></video-player>
+                      <img
+                        style="width: 100%;border-radius: 50%;"
+                        :src="attachImageUrl(user.userImage)"
+                      />
                     </div>
-
-                    <!-- 视频作者 -->
-
-                    <div style="width:25%;margin-right:5%;float:right">
-                      <el-card style="background-color:#ffffff00;border-color:#ffffff00;box-shadow:none">
-                        <!-- 关注作者 -->
-                        <div style="margin-top:5%;padding-bottom:5%">
-                          <div
-                            style="width:20%;float:left;cursor: pointer;"
-                            @click="goDetail(user)"
-                          >
-                            <img
-                              style="width: 100%;border-radius: 50%;"
-                              :src="attachImageUrl(user.userImage)"
-                            />
-                          </div>
-                          <div style="width:50%;float:left;margin-top:2.5%">
-                            <span>{{ user.userName }}</span>
-                          </div>
-                          <div
-                            style="width:30%;float:right;"
-                            v-show="this.id != this.user.id"
-                          >
-                            <el-button
-                              round
-                              style="background-color:#f7a7a7;color:#ffffff"
-                              :style="{
+                    <div style="width:50%;float:left;margin-top:2.5%">
+                      <span>{{ user.userName }}</span>
+                    </div>
+                    <div
+                      style="width:30%;float:right;"
+                      v-show="this.id != this.user.id"
+                    >
+                      <el-button
+                        round
+                        style="background-color:#f7a7a7;color:#ffffff"
+                        :style="{
                                 backgroundColor: bg_color,
                                 color: ft_color
                               }"
-                              @click="changeGZ()"
-                            >
-                              {{ gz }}</el-button>
-                          </div>
-                        </div>
-                        <!-- 分割线 -->
-                        <br /><br />
-                        <hr />
-                        <!-- 视频推荐 -->
-                        <span>其他视频</span>
-                        <hr />
-                        <div
-                          v-for="(item, index) in uservideoList"
-                          :key="index"
-                        >
-                          <el-card style="height:90px;width:100%;background-color:#ffffff00;cursor: pointer;">
-                            <img
-                              style="width:35%;float:left"
-                              class="image"
-                              :src="attachImageUrl(item.pic)"
-                              @click="goAlbum(item)"
-                            />
-                            <div style="
-                              float:left;margin-left:10%">
-                              <span style="font-size:18px">标题：{{ item.videoTitle }}</span>
-                              <div class="bottom clearfix">
-                                <span style="font-size:8px">发布时间：{{
-                                    attachDate(item.videoTime)
-                                  }}</span>
-                              </div>
-                            </div>
-                          </el-card>
-                          <hr />
-                        </div>
-                      </el-card>
+                        @click="changeGZ()"
+                      >
+                        {{ gz }}</el-button>
                     </div>
                   </div>
-                  <br />
-
-                  <!-- 视频详情界面 -->
-                  <div style="margin-left:10%;margin-right:10%;height:20%;margin-top:30%;">
+                  <!-- 分割线 -->
+                  <br /><br />
+                  <hr />
+                  <!-- 视频推荐 -->
+                  <span>其他视频</span>
+                  <hr />
+                  <div
+                    v-for="(item, index) in uservideoList"
+                    :key="index"
+                  >
+                    <el-card style="height:90px;width:100%;background-color:#ffffff00;cursor: pointer;">
+                      <img
+                        style="width:35%;float:left"
+                        class="image"
+                        :src="attachImageUrl(item.pic)"
+                        @click="goAlbum(item)"
+                      />
+                      <div style="
+                              float:left;margin-left:10%">
+                        <span style="font-size:15px">{{ item.videoTitle }}</span>
+                        <div class="bottom clearfix">
+                          <span style="font-size:8px">{{
+                                    attachDate(item.videoTime)
+                                  }}</span>
+                        </div>
+                      </div>
+                    </el-card>
                     <hr />
-                    <div>
-                      <div
-                        class="dianzan_switch"
-                        style="float:left"
-                      >
-                        <el-button
-                          icon="iconfont icon-dianzan"
-                          :style="{
+                  </div>
+                </el-card>
+              </div>
+            </div>
+            <br />
+
+            <!-- 视频详情界面 -->
+            <div style="margin-left:10%;margin-right:10%;height:20%;margin-top:30%;">
+              <hr />
+              <div>
+                <div
+                  class="dianzan_switch"
+                  style="float:left"
+                >
+                  <el-button
+                    icon="iconfont icon-dianzan"
+                    :style="{
                             backgroundColor: bg_color1,
                             color: ft_color1
                           }"
-                          circle
-                          @click="changeDZ()"
-                        >{{ tempList.videoThumes }} {{ dz }}</el-button>
-                      </div>
-                      <div style="margin-left:2%;float:left">
-                        <el-button
-                          :style="{
+                    circle
+                    @click="changeDZ()"
+                  >{{ tempList.videoThumes }} {{ dz }}</el-button>
+                </div>
+                <div style="margin-left:2%;float:left">
+                  <el-button
+                    :style="{
                             backgroundColor: bg_color2,
                             color: ft_color2
                           }"
-                          :class="{ active: isCollect }"
-                          icon="iconfont icon-shoucang"
-                          circle
-                          @click="changeSC"
-                        >{{ tempList.videoSc }} {{ sc }}</el-button>
-                      </div>
-                      <div style="margin-left:2%;float:left">
-                        <el-button
-                          style="background-color:#f7a7a7;color:#ffffff"
-                          icon="iconfont icon-shouye1"
-                          circle
-                          @click="ShareLink()"
-                        >点击分享</el-button>
-                      </div>
-                      <div style="margin-left:2%;float:left">
-                        <el-button
-                          style="background-color:#f7a7a7;color:#ffffff"
-                          icon="iconfont icon-yanjing"
-                          circle
-                        >{{ tempList.videoBrowse }} 浏览</el-button>
-                      </div>
-                    </div>
-                    <br />
-                    <br />
-                    <hr />
-                    <div>
-                      <h3>{{ tempList.videoTitle }}</h3>
-                      <span>{{ user.userName }}
-                        {{ attachDate(tempList.videoTime) }}</span><br />
-                      <span>{{ tempList.videoDes }}</span>
-                    </div>
-                    <hr />
-                  </div>
-
-                  <!-- 评论 -->
-                  <comment
-                    :playId="videoid"
-                    :type="0"
-                  ></comment>
-                  <!-- 复制链接 -->
-                  <el-dialog
-                    title="复制链接"
-                    :visible.sync="linkVisible"
-                    width="300px"
-                    center
-                  >
-                    <div>
-                      <a :href="config.value">{{config.value}}</a>
-                    </div>
-                    <span slot="footer">
-                      <el-button
-                        size="mini"
-                        @click="linkVisible = false"
-                      >取消</el-button>
-                      <el-button
-                        size="mini"
-                        class="tag-copy"
-                        :data-clipboard-text="config.value"
-                        @click="copyShareLink"
-                      >复制链接</el-button>
-                    </span>
-                  </el-dialog>
+                    :class="{ active: isCollect }"
+                    icon="iconfont icon-shoucang"
+                    circle
+                    @click="changeSC"
+                  >{{ tempList.videoSc }} {{ sc }}</el-button>
+                </div>
+                <div style="margin-left:2%;float:left">
+                  <el-button
+                    style="background-color:#f7a7a7;color:#ffffff"
+                    icon="iconfont icon-shouye1"
+                    circle
+                    @click="ShareLink()"
+                  >点击分享</el-button>
+                </div>
+                <div style="margin-left:2%;float:left">
+                  <el-button
+                    style="background-color:#f7a7a7;color:#ffffff"
+                    icon="iconfont icon-yanjing"
+                    circle
+                  >{{ tempList.videoBrowse }} 浏览</el-button>
                 </div>
               </div>
-            </el-main>
-          </el-container>
-        </el-container>
+              <br />
+              <br />
+              <hr />
+              <div>
+                <h3>{{ tempList.videoTitle }}</h3>
+                <span>{{ user.userName }}
+                  {{ attachDate(tempList.videoTime) }}</span><br />
+                <span>{{ tempList.videoDes }}</span>
+              </div>
+              <hr />
+            </div>
+
+            <!-- 评论 -->
+            <comment
+              :playId="videoid"
+              :type="0"
+            ></comment>
+            <!-- 复制链接 -->
+            <el-dialog
+              title="复制链接"
+              :visible.sync="linkVisible"
+              width="300px"
+              center
+            >
+              <div>
+                <a :href="config.value">{{config.value}}</a>
+              </div>
+              <span slot="footer">
+                <el-button
+                  size="mini"
+                  @click="linkVisible = false"
+                >取消</el-button>
+                <el-button
+                  size="mini"
+                  class="tag-copy"
+                  :data-clipboard-text="config.value"
+                  @click="copyShareLink"
+                >复制链接</el-button>
+              </span>
+            </el-dialog>
+          </div>
+        </div>
       </el-main>
     </el-container>
     <scroll-top />
@@ -644,21 +633,47 @@ export default {
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
+  background-size: 100% 100%;
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 /deep/.el-card__body {
   padding: 10px;
 }

@@ -2,17 +2,19 @@
   <div>
     <Head></Head>
     <el-container>
-      <el-main id="bgImg">
+      <el-main>
         <div style="text-align:center">
           <el-button
+            class="goback"
             type="primary"
             @click="goBack"
-            style="float:left;color:#f7a7a7;font-size:25px;padding-left:10px;padding-top:5px;background-color:#ffffff00;border-color:#ffffff00"
             icon="el-icon-back"
           ></el-button>
-          <h3 style="font-size: 19px;font-family: '楷体';color:#f7a7a7">
-            汉服商铺
-          </h3>
+          <div class="words">
+            <h3>
+              汉服商铺
+            </h3>
+          </div>
           <!-- 分割线 -->
           <el-divider></el-divider>
         </div>
@@ -24,7 +26,11 @@
               class="box-card"
               style="width:100%;background-color: #ffffff30;"
             >
-              <div slot="header" class="clearfix" style="text-align: center;">
+              <div
+                slot="header"
+                class="clearfix"
+                style="text-align: center;"
+              >
                 <span>店铺资历榜</span>
               </div>
               <div
@@ -34,7 +40,11 @@
                 style="text-align: center;"
               >
                 <div class="item">
-                  <a class="item-name" :href="item.shopHttp" target="_blank">
+                  <a
+                    class="item-name"
+                    :href="item.shopHttp"
+                    target="_blank"
+                  >
                     {{ item.shopName }}
                   </a>
                 </div>
@@ -48,7 +58,11 @@
               class="box-card"
               style="width:100%;background-color: #ffffff30;"
             >
-              <div slot="header" class="clearfix" style="text-align: center;">
+              <div
+                slot="header"
+                class="clearfix"
+                style="text-align: center;"
+              >
                 <span>热门店铺</span>
               </div>
               <div
@@ -58,7 +72,11 @@
                 style="text-align: center;"
               >
                 <div class="item">
-                  <a class="item-name" :href="item.shopHttp" target="_blank">
+                  <a
+                    class="item-name"
+                    :href="item.shopHttp"
+                    target="_blank"
+                  >
                     {{ item.shopName }}
                   </a>
                 </div>
@@ -68,10 +86,13 @@
 
           <!-- 分类栏 -->
           <div>
-            <content-list1 :contentList1="data" :lab="false"></content-list1>
+            <content-list1
+              class="content"
+              :contentList1="data"
+              :lab="false"
+            ></content-list1>
             <div class="pagination">
               <el-pagination
-                style="margin-left:35%"
                 @current-change="handleCurrentChange"
                 background
                 layout="total,prev,pager,next"
@@ -100,7 +121,7 @@ import {
   getVideoOfType,
   getAllShop,
   getAllShopOfFans,
-  getAllShopOfTime
+  getAllShopOfTime,
 } from "../../api/index";
 export default {
   name: "Shop",
@@ -110,7 +131,7 @@ export default {
       shopofFans: [], //热门榜
       shopofTime: [], //资历榜
       pageSize: 5, //页面大小，一页5条数据
-      currentPage: 1 //当前默认页
+      currentPage: 1, //当前默认页
       //   activeName: "first"
     };
   },
@@ -121,7 +142,7 @@ export default {
         (this.currentPage - 1) * this.pageSize,
         this.currentPage * this.pageSize
       );
-    }
+    },
   },
   created() {
     // this.forms = forms;
@@ -133,20 +154,20 @@ export default {
     getShopOfFans() {
       //获取推荐榜,按浏览量排序
       getAllShopOfFans()
-        .then(res => {
+        .then((res) => {
           this.shopofFans = res.slice(0, 5);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     getShopOfTime() {
       //获取热门榜,按浏览量排序
       getAllShopOfTime()
-        .then(res => {
+        .then((res) => {
           this.shopofTime = res.slice(0, 5);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -158,36 +179,60 @@ export default {
       this.$router.go(-1);
     },
     getShopList() {
-      getAllShop().then(res => {
+      getAllShop().then((res) => {
         this.allShop = res;
       });
-    }
+    },
   },
   components: {
     Head,
     Footer,
     IndexZj,
     ScrollTop,
-    ContentList1
-  }
+    ContentList1,
+  },
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height:900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;  
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3{
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 /* 榜单 */
 .text {
   font-size: 16px;
@@ -214,5 +259,16 @@ export default {
 
 .box-card {
   width: 480px;
+}
+/* contentlist */
+.content {
+  width: 70%;
+  margin-left: 15%;
+  /* background-color: #f7a7a7; */
+}
+.pagination {
+  width: 70%;
+  margin-left: 15%;
+  margin-bottom: 10%;
 }
 </style>

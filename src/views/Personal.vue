@@ -2,21 +2,24 @@
   <div>
 
     <Head></Head>
-    <el-container id="bgImg">
-      <el-main style="">
-        <div style="border:1px #ccc solid;background-color:#ffffff50">
-          <!-- <el-divider direction="vertical"></el-divider> -->
-          <el-container style="">
+    <el-container>
+      <el-main>
+        <div>
+          <el-container>
             <el-header style="height:20%;">
               <div>
-                <div style="text-align:center;height:25px;">
+                <div style="text-align:center">
                   <el-button
                     type="primary"
+                    class="goback"
                     @click="goBack"
-                    style="float:left;color:#f7a7a7;font-size:25px;padding-left:10px;padding-top:5px;background-color:#ffffff00;border-color:#ffffff00"
                     icon="el-icon-back"
                   ></el-button>
-                  <h4 style="font-family:'楷体';font-size:25px">个人中心</h4>
+                  <div class="words">
+                    <h3>
+                      个人中心
+                    </h3>
+                  </div>
                 </div>
                 <!-- 分割线 -->
                 <el-divider></el-divider>
@@ -33,10 +36,10 @@
                     </div>
                     <el-row style="margin-left:20%;float:left;font-family:'楷体'">
                       <el-col>
-                        <span>昵称：{{ this.userDate.userName }}</span>
+                        <span style="font-size:20px">昵称:{{ this.userDate.userName }}</span>
                       </el-col>
                       <el-col>
-                        <span>个性签名：{{ this.userDate.userSign }}</span>
+                        <span style="font-size:15px">个性签名:{{ this.userDate.userSign }}</span>
                       </el-col>
                     </el-row>
                   </div>
@@ -246,13 +249,13 @@
                 >
                   <el-tabs
                     v-model="activeName"
-                    style="padding-top: 15px;line-height: 35px;"
+                    style="padding-top: 15px;line-height: 25px;"
                   >
                     <el-tab-pane
                       label="视频"
                       name="two1"
                     >
-                      <div>
+                      <div style="min-height:620px">
                         <div
                           v-show="videoDate.length == 0"
                           align="center"
@@ -264,7 +267,7 @@
                         <el-col>
                           <el-row
                             :span="8"
-                            v-for="(item, index) in videoDate"
+                            v-for="(item, index) in data1"
                             :key="index"
                           >
                             <div>
@@ -275,14 +278,14 @@
                                 <div @click="govideo(item)">
                                   <img
                                     class="image"
-                                    style="float:left;height:100px"
+                                    style="float:left;height:100px;width:150px"
                                     :src="attachImageUrl(item.pic)"
                                   />
                                   <div style="padding: 10px;float:left;">
                                     <span>标题：{{ item.videoTitle }}</span>
                                     <div class="bottom clearfix">
                                       <div class="bottom clearfix">
-                                        <span style="font-size:8px">发布时间：{{ item.videoTime }}</span>
+                                        <span style="font-size:8px;margin-top:0px">发布时间：{{ item.videoTime }}</span>
                                       </div>
                                     </div>
                                   </div>
@@ -301,7 +304,6 @@
                                       >更新封面</el-button>
                                     </el-upload>
                                   </div>
-                                  <!-- <el-button size="mini">更换封面</el-button> -->
                                   <el-button
                                     size="mini"
                                     type="danger"
@@ -336,7 +338,7 @@
                       label="专栏"
                       name="two2"
                     >
-                      <div>
+                      <div style="min-height:620px">
                         <div
                           v-show="articleDate.length == 0"
                           align="center"
@@ -348,7 +350,7 @@
                         <el-col>
                           <el-row
                             :span="8"
-                            v-for="(item, index) in articleDate"
+                            v-for="(item, index) in data2"
                             :key="index"
                           >
                             <div>
@@ -359,7 +361,7 @@
                                 <div @click="goarticle(item)">
                                   <img
                                     class="image"
-                                    style="float:left;height:100px"
+                                    style="float:left;height:100px;width:150px"
                                     :src="attachImageUrl(item.pic)"
                                   />
                                   <div style="padding: 10px;float:left;">
@@ -401,13 +403,24 @@
                           </el-row>
                         </el-col>
                       </div>
+                      <!-- 添加分页组件 -->
+                      <div class="pagination">
+                        <el-pagination
+                          background
+                          layout="total,prev,pager,next"
+                          :current-page="currentPage2"
+                          :page-size="pageSize2"
+                          :total="articleDate.length"
+                          @current-change="handleCurrentChange2"
+                        ></el-pagination>
+                      </div>
                     </el-tab-pane>
 
                     <el-tab-pane
                       label="我的收藏"
                       name="two3"
                     >
-                      <div>
+                      <div style="min-height:620px">
                         <div
                           v-show="collectDate.length == 0"
                           align="center"
@@ -419,18 +432,18 @@
                         <el-col>
                           <el-row
                             :span="8"
-                            v-for="(item, index) in collectDate"
+                            v-for="(item, index) in data3"
                             :key="index"
                           >
                             <div>
                               <el-card
                                 :body-style="{ padding: '0px' }"
-                                style="background-color:#ffffff10;height:150px"
+                                style="background-color:#ffffff10;height:100px"
                               >
                                 <div @click="goDetails(item, item.type)">
                                   <img
                                     class="image"
-                                    style="float:left;height:150px"
+                                    style="float:left;height:100px;width:150px"
                                     :src="attachImageUrl(item.pic)"
                                   />
                                   <div style="padding: 10px;float:left;weight:100%">
@@ -448,7 +461,7 @@
                                   </div>
                                 </div>
 
-                                <div style="padding: 10px;float:right;margin-top:40px">
+                                <div style="padding: 10px;float:right;margin-top:30px">
                                   <el-button
                                     size="mini"
                                     type="danger"
@@ -460,6 +473,17 @@
                             <hr />
                           </el-row>
                         </el-col>
+                      </div>
+                      <!-- 添加分页组件 -->
+                      <div class="pagination">
+                        <el-pagination
+                          background
+                          layout="total,prev,pager,next"
+                          :current-page="currentPage3"
+                          :page-size="pageSize3"
+                          :total="collectDate.length"
+                          @current-change="handleCurrentChange3"
+                        ></el-pagination>
                       </div>
                     </el-tab-pane>
                     <el-dialog
@@ -528,13 +552,13 @@
                 >
                   <el-tabs
                     v-model="activeName1"
-                    style="padding-top: 15px;line-height: 35px;"
+                    style="padding-top: 15px;line-height: 25px;"
                   >
                     <el-tab-pane
                       label="我的关注"
                       name="three1"
                     >
-                      <div>
+                      <div style="min-height:620px">
                         <div
                           v-show="guanzDate.length == 0"
                           align="center"
@@ -546,22 +570,26 @@
                         <el-col>
                           <el-row
                             :span="8"
-                            v-for="(item, index) in guanzDate"
+                            v-for="(item, index) in data4"
                             :key="index"
                           >
                             <el-card
                               :body-style="{ padding: '0px' }"
-                              style="background-color:#ffffff10;height:80px"
+                              style="background-color:#ffffff10;height:100px"
                             >
                               <div @click="goAuthor(item)">
                                 <img
                                   class="image"
-                                  style="float:left;height:80px"
+                                  style="float:left;height:100px;width:150px"
                                   :src="attachImageUrl(item.userImage)"
                                 />
-                                <div style="padding-left: 10px;float:left">
-                                  <span>昵称：{{ item.userName }}</span><br />
-                                  <span>关注时间：{{ item.time }}</span>
+                                <div style="padding: 10px;float:left;">
+                                  <span>昵称：{{ item.userName }}</span>
+                                  <div class="bottom clearfix">
+                                    <div class="bottom clearfix">
+                                      <span style="font-size:8px">关注时间：{{ item.time }}</span>
+                                    </div>
+                                  </div>
                                   <div
                                     class="bottom clearfix"
                                     style="float:right"
@@ -584,6 +612,17 @@
                             <hr />
                           </el-row>
                         </el-col>
+                      </div>
+                      <!-- 添加分页组件 -->
+                      <div class="pagination">
+                        <el-pagination
+                          background
+                          layout="total,prev,pager,next"
+                          :current-page="currentPage4"
+                          :page-size="pageSize4"
+                          :total="guanzDate.length"
+                          @current-change="handleCurrentChange4"
+                        ></el-pagination>
                       </div>
                     </el-tab-pane>
                     <el-dialog
@@ -637,7 +676,7 @@
                       label="粉丝列表"
                       name="three2"
                     >
-                      <div>
+                      <div style="min-height:620px">
                         <div
                           v-show="fansDate.length == 0"
                           align="center"
@@ -650,22 +689,26 @@
                         <el-col>
                           <el-row
                             :span="8"
-                            v-for="(item, index) in fansDate"
+                            v-for="(item, index) in data5"
                             :key="index"
                           >
                             <el-card
                               :body-style="{ padding: '0px' }"
-                              style="background-color:#ffffff10;height:80px"
+                              style="background-color:#ffffff10;height:100px"
                             >
                               <div @click="goAuthor1(item)">
                                 <img
                                   class="image"
-                                  style="float:left;width:80px;height:80px"
+                                  style="float:left;width:150px;height:100px"
                                   :src="attachImageUrl(item.userImage)"
                                 />
-                                <div style="padding-left: 10px;float:left;weight:100%">
-                                  <span>昵称：{{ item.userName }}</span><br />
-                                  <span>被关注时间：{{ attachDate(item.time) }}</span>
+                                <div style="padding: 10px;float:left;">
+                                  <span>昵称：{{ item.userName }}</span>
+                                  <div class="bottom clearfix">
+                                    <div class="bottom clearfix">
+                                      <span style="font-size:8px">被关注时间：{{ attachDate(item.time) }}</span>
+                                    </div>
+                                  </div>
                                   <div
                                     class="bottom clearfix"
                                     style="float:right"
@@ -683,6 +726,17 @@
                             <hr />
                           </el-row>
                         </el-col>
+                      </div>
+                      <!-- 添加分页组件 -->
+                      <div class="pagination">
+                        <el-pagination
+                          background
+                          layout="total,prev,pager,next"
+                          :current-page="currentPage5"
+                          :page-size="pageSize5"
+                          :total="fansDate.length"
+                          @current-change="handleCurrentChange5"
+                        ></el-pagination>
                       </div>
                     </el-tab-pane>
                   </el-tabs>
@@ -777,6 +831,14 @@ export default {
       collectDate: [], //用户的收藏列表
       pageSize1: 5, //分页的每页大小
       currentPage1: 1, //当前页
+      pageSize2: 5, //分页的每页大小
+      currentPage2: 1, //当前页
+      pageSize3: 5, //分页的每页大小
+      currentPage3: 1, //当前页
+      pageSize4: 5, //分页的每页大小
+      currentPage4: 1, //当前页
+      pageSize5: 5, //分页的每页大小
+      currentPage5: 1, //当前页
       textarea: "", //发送的信息内容
       delVisible1: false,
       delVisible2: false,
@@ -825,6 +887,34 @@ export default {
         this.currentPage1 * this.pageSize1
       );
     },
+    data2() {
+      //根据分页计算
+      return this.articleDate.slice(
+        (this.currentPage2 - 1) * this.pageSize2,
+        this.currentPage2 * this.pageSize2
+      );
+    },
+    data3() {
+      //根据分页计算
+      return this.collectDate.slice(
+        (this.currentPage3 - 1) * this.pageSize3,
+        this.currentPage3 * this.pageSize3
+      );
+    },
+    data4() {
+      //根据分页计算
+      return this.guanzDate.slice(
+        (this.currentPage4 - 1) * this.pageSize4,
+        this.currentPage4 * this.pageSize4
+      );
+    },
+    data5() {
+      //根据分页计算
+      return this.fansDate.slice(
+        (this.currentPage5 - 1) * this.pageSize5,
+        this.currentPage5 * this.pageSize5
+      );
+    },
   },
   created() {
     this.userId = this.$route.params.id;
@@ -842,6 +932,22 @@ export default {
     //获取当前页
     handleCurrentChange1(val) {
       this.currentPage1 = val;
+    },
+    //获取当前页
+    handleCurrentChange2(val) {
+      this.currentPage2 = val;
+    },
+    //获取当前页
+    handleCurrentChange3(val) {
+      this.currentPage3 = val;
+    },
+    //获取当前页
+    handleCurrentChange4(val) {
+      this.currentPage4 = val;
+    },
+    //获取当前页
+    handleCurrentChange5(val) {
+      this.currentPage5 = val;
     },
 
     //显示用户信息
@@ -979,6 +1085,7 @@ export default {
           o.userName = res.userName;
           o.userImage = res.userImage;
           this.fansDate.push(o);
+          this.currentPage5 = 1;
         })
         .catch((err) => {
           console.log(err);
@@ -1008,6 +1115,7 @@ export default {
           o.userName = res.userName;
           o.userImage = res.userImage;
           this.guanzDate.push(o);
+          this.currentPage4 = 1;
         })
         .catch((err) => {
           console.log(err);
@@ -1018,6 +1126,7 @@ export default {
       getArticleOfUseId(this.userId)
         .then((res) => {
           this.articleDate = res;
+          this.currentPage2 = 1;
         })
         .catch((err) => {
           this.$message({
@@ -1079,6 +1188,7 @@ export default {
           o.pic = res.pic;
           o.atcDescribe = res.atcDescribe;
           this.collectDate.push(o);
+          this.currentPage3 = 1;
         })
         .catch((err) => {
           console.log(err);
@@ -1317,21 +1427,47 @@ export default {
 </script>
 
 <style scoped>
-/* #bgImg {
-  background-image: url("../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
+  background-size: 100% 100%;
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 
 .avatar-uploader .el-upload {
   border: 10px dashed #000000;
@@ -1420,7 +1556,7 @@ export default {
 
 /deep/ .el-form-item__label {
   /* 输入框字体颜色 */
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   font-family: "楷体";
   margin-top: 10px;
 }

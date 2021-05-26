@@ -113,18 +113,23 @@
           </div>
         </div>
       </el-header>
-      <el-main
-        id="bgImg"
-        style="min-height:900px"
-      >
-        <el-header style="background-color:#ffffff50">
-          <el-page-header
-            @back="goBack"
-            content="我的消息"
-            style="padding-top:20px"
-          >
-          </el-page-header>
-        </el-header>
+      <el-main>
+        <div style="text-align:center">
+          <el-button
+            type="primary"
+            class="goback"
+            @click="goBack"
+            icon="el-icon-back"
+          ></el-button>
+          <div class="words">
+            <h3>
+              我的消息
+            </h3>
+          </div>
+          <!-- 分割线 -->
+          <!-- <el-divider></el-divider> -->
+          <hr>
+        </div>
         <!-- <JwChat-index
           :taleList="list"
           @enter="bindEnter"
@@ -276,21 +281,47 @@ export default {
 };
 </script>
 <style scoped>
-/* #bgImg {
-  background-image: url("../../assets/images/bg2.jpg");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100%;
-} */
 .el-main {
   display: block;
   flex: 1;
   flex-basis: auto;
   overflow: auto;
   box-sizing: border-box;
-  padding: 0px;
+  padding-top: 0px;
+  min-height:900px;
+  background-color: rgba(255, 255, 255, 0.4);
 }
+/****************返回按钮层*****************/
+.goback {
+  float: left;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 30px;
+  font-family: "楷体";
+  background-color: #f7a7a7;
+  border-color: lightpink;
+}
+.goback:hover {
+  /* 鼠标放上去变色 */
+  border-color: rgb(255, 255, 255);
+  background-color: #f38787e5;
+}
+.words {
+  font-size: 19px;
+  font-family: "楷体";
+  width: 10%;
+  height: 40px;
+  margin-left: 45%;
+  background-color: #ffffff;
+  /* background-image: url("../../assets/images/background/ba.jpg"); */
+  background-size: 100% 100%;
+  border-radius: 30px;
+  color: #f7a7a7;
+}
+.words h3 {
+  padding-top: 8px;
+}
+/****************返回按钮层*****************/
 .el-header {
   height: 150px;
   background-color: #f7a7a7;
